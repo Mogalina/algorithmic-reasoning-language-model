@@ -79,7 +79,10 @@ def test_embedder_init(dummy_config, mock_transformers, tmp_path):
 def test_embedder_mean_pool():
     # Create simple tensors
     # Batch size 1, sequence length 2, dim 4
-    token_embeddings = torch.tensor([[[1.0, 2.0, 3.0, 4.0], [5.0, 6.0, 7.0, 8.0]]])
+    token_embeddings = torch.tensor([[
+        [1.0, 2.0, 3.0, 4.0], 
+        [5.0, 6.0, 7.0, 8.0]
+    ]])
     
     # Attention mask
     attention_mask = torch.tensor([[1, 0]])
