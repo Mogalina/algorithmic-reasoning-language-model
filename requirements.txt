@@ -1,0 +1,10 @@
+loguru
+huggingface_hub
+rich
+numpy
+torch
+transformers
+faiss-cpu
+PyYAML
+pytest
+pytest-mock
