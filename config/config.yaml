@@ -5,10 +5,6 @@ embedding:
   local_model_dir: "./models/embeddinggemma-300m"
   # Number of texts to embed in a single forward pass
   batch_size: 32
-  # Number of tokens to keep from the summary
-  max_tokens: 512
-  # Number of tokens to keep from the summary
-  summary_max_tokens: 128
 
 database:
   faiss:
