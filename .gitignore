@@ -1,0 +1,111 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+venv/
+env/
+ENV/
+virtualenv/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Logs
+logs/
+*.log
+
+# Data
+data/
+*.csv
+*.npy
+*.pkl
+*.h5
+
+# Models
+models/
+checkpoints/
+*.pth
+*.pt
+*.ckpt
+
+# Results
+results/
+experiments/results/
+
+# Protobuf generated files
+*_pb2.py
+*_pb2_grpc.py
+
+# Database
+*.db
+*.sqlite
+
+# Secrets
+.env
+secrets/
+*.key
+*.pem
+
+# Coverage
+.coverage
+htmlcov/
+.pytest_cache/
+
+# Docker
+.dockerignore
+
+# Kubernetes
+*.secret.yaml
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# MacOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# LaTeX
+*.aux
+*.log
+*.out
+*.bbl
+*.blg
+*.bcf
+*.lot
+*.run.xml
+*.synctex.gz
+*.synctex.gz(busy)
+*.toc
+*.lof
