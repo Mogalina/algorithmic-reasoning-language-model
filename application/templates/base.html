@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}InterviewPrep{% endblock %}</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <nav>
+        <a href="/" class="logo">InterviewPrep</a>
+        <div class="nav-links">
+            {% block nav %}
+            <a href="/login">Login</a>
+            <a href="/register">Register</a>
+            {% endblock %}
+        </div>
+    </nav>
+    {% block content %}{% endblock %}
+    <footer>InterviewPrep &copy; 2026</footer>
+</body>
+</html>
