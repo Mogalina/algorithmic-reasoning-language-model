@@ -41,7 +41,6 @@ logs/
 
 # Data
 data/
-*.csv
 *.npy
 *.pkl
 *.h5
