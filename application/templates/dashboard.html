@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}Dashboard - InterviewPrep{% endblock %}
+{% block nav %}
+<a href="/dashboard">Dashboard</a>
+<a href="/logout">Logout</a>
+{% endblock %}
+{% block content %}
+<div class="dashboard-container">
+    <div class="dashboard-header">
+        <h1>Dashboard</h1>
+        <span style="color:#666;">{{ user.email }}</span>
+    </div>
+
+    <div class="card">
+        <h3>Schedule an Interview</h3>
+        <form method="post" action="/dashboard/add" class="inline-form">
+            <div class="form-group">
+                <label for="company_id">Company</label>
+                <select name="company_id" id="company_id" class="company_id" required>
+                    {% for company in companies %}
+                    <option value="{{ company.id }}">{{ company.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="days_until">Days Until Interview</label>
+                <input type="number" id="days_until" name="days_until" min="1" max="365" required placeholder="e.g. 14">
+            </div>
+            <button type="submit" class="btn">Add</button>
+        </form>
+    </div>
+
+    <div class="card">
+        <h3>Your Interviews</h3>
+        {% if interviews %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Company</th>
+                    <th>Days Until Interview</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for interview in interviews %}
+                <tr>
+                    <td>{{ interview.company.name }}</td>
+                    <td>{{ interview.days_until }}</td>
+                    <td>
+                        {% if interview.days_until <= 3 %}
+                        <span class="badge" style="background:#fdecea;color:#c0392b;">Urgent</span>
+                        {% elif interview.days_until <= 7 %}
+                        <span class="badge" style="background:#fef9e7;color:#b7950b;">Soon</span>
+                        {% else %}
+                        <span class="badge" style="background:#eafaf1;color:#1e8449;">On Track</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="empty-state">No interviews scheduled yet. Add one above to get started.</div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Login - InterviewPrep{% endblock %}
+{% block content %}
+<div class="auth-container">
+    <h2>Login</h2>
+    {% if error %}
+    <div class="error-msg">{{ error }}</div>
+    {% endif %}
+    <form method="post" action="/login">
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required placeholder="you@example.com">
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required placeholder="Enter your password">
+        </div>
+        <button type="submit" class="btn">Login</button>
+    </form>
+    <p>Don't have an account? <a href="/register">Register</a></p>
+</div>
+{% endblock %}
