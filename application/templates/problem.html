@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% block title %}{{ problem.title }} - InterviewPrep{% endblock %}
+{% block nav %}
+<a href="/dashboard">Dashboard</a>
+<a href="/interview/{{ interview.id }}/roadmap">Roadmap</a>
+<a href="/logout">Logout</a>
+{% endblock %}
+{% block content %}
+<div class="problem-layout">
+    <div class="problem-panel">
+        <div class="problem-panel-header">
+            <a href="/interview/{{ interview.id }}/roadmap" class="back-link">&larr; Roadmap</a>
+            <span class="difficulty-tag difficulty-{{ problem.difficulty | lower }}">{{ problem.difficulty }}</span>
+        </div>
+        <h1 class="problem-detail-title">{{ problem.title }}</h1>
+        {% if problem.topics %}
+        <div class="problem-topics-bar">
+            {% for topic in problem.topics.split(', ') %}
+            <span class="topic-chip">{{ topic }}</span>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <div class="problem-description">
+            {% if problem.description %}
+            {{ problem.description | replace('\n', '<br>') | safe }}
+            {% else %}
+            <div class="empty-state">
+                Problem description not available yet.<br>
+                Run <code>python scripts/enrich_dataset.py</code> to fetch descriptions.
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="problem-actions">
+            <a href="{{ problem.url }}" target="_blank" rel="noopener" class="btn">Solve on LeetCode &nearr;</a>
+        </div>
+    </div>
+
+    <div class="tutor-panel">
+        <div class="tutor-header">
+            <div class="tutor-avatar">T</div>
+            <div>
+                <strong>Tutor</strong>
+                <span class="tutor-status">Socratic mode</span>
+            </div>
+        </div>
+        <div class="tutor-messages" id="tutor-messages">
+            <div class="tutor-msg tutor-msg--assistant">
+                <p>Hi! I'm your Socratic tutor for <strong>{{ problem.title }}</strong>.</p>
+                <p>Try solving it first — when you get stuck, describe what you've tried and I'll guide you with questions rather than answers.</p>
+            </div>
+        </div>
+        <form class="tutor-input-form" id="tutor-form" onsubmit="return sendMessage(event)">
+            <input type="text" id="tutor-input" placeholder="Ask for a hint..." autocomplete="off">
+            <button type="submit" class="tutor-send-btn">&uarr;</button>
+        </form>
+    </div>
+</div>
+
+<script>
+function sendMessage(e) {
+    e.preventDefault();
+    const input = document.getElementById('tutor-input');
+    const messages = document.getElementById('tutor-messages');
+    const text = input.value.trim();
+    if (!text) return false;
+
+    const userMsg = document.createElement('div');
+    userMsg.className = 'tutor-msg tutor-msg--user';
+    userMsg.innerHTML = '<p>' + text.replace(/</g, '&lt;') + '</p>';
+    messages.appendChild(userMsg);
+
+    input.value = '';
+
+    // Placeholder bot response until the tutor agent is wired
+    setTimeout(() => {
+        const botMsg = document.createElement('div');
+        botMsg.className = 'tutor-msg tutor-msg--assistant';
+        botMsg.innerHTML = '<p>The tutor agent is not connected yet. This is a placeholder response.</p><p>Once wired, I\'ll ask you guiding questions to help you discover the solution yourself.</p>';
+        messages.appendChild(botMsg);
+        messages.scrollTop = messages.scrollHeight;
+    }, 600);
+
+    messages.scrollTop = messages.scrollHeight;
+    return false;
+}
+</script>
+{% endblock %}

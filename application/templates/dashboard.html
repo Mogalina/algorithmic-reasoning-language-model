@@ -37,22 +37,41 @@
             <thead>
                 <tr>
                     <th>Company</th>
-                    <th>Days Until Interview</th>
+                    <th>Days</th>
+                    <th>Progress</th>
                     <th>Status</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
                 {% for interview in interviews %}
+                {% set total = interview.roadmaps | length %}
+                {% set done = interview.roadmaps | selectattr("is_completed") | list | length %}
                 <tr>
-                    <td>{{ interview.company.name }}</td>
+                    <td><strong>{{ interview.company.name }}</strong></td>
                     <td>{{ interview.days_until }}</td>
                     <td>
-                        {% if interview.days_until <= 3 %}
-                        <span class="badge" style="background:#fdecea;color:#c0392b;">Urgent</span>
-                        {% elif interview.days_until <= 7 %}
-                        <span class="badge" style="background:#fef9e7;color:#b7950b;">Soon</span>
+                        {% if total > 0 %}
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" style="width: {{ (done / total * 100) | int }}%;"></div>
+                        </div>
+                        <span class="progress-text">{{ done }}/{{ total }}</span>
                         {% else %}
-                        <span class="badge" style="background:#eafaf1;color:#1e8449;">On Track</span>
+                        <span class="progress-text" style="color:#999;">—</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if interview.days_until <= 3 %}
+                        <span class="badge badge-urgent">Urgent</span>
+                        {% elif interview.days_until <= 7 %}
+                        <span class="badge badge-soon">Soon</span>
+                        {% else %}
+                        <span class="badge badge-ok">On Track</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if total > 0 %}
+                        <a href="/interview/{{ interview.id }}/roadmap" class="btn btn-sm">Roadmap &rarr;</a>
                         {% endif %}
                     </td>
                 </tr>
