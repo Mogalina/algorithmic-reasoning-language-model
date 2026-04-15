@@ -1,6 +1,6 @@
 # Algorithmic Reasoning Language Model
 
-An interview preparation platform that combines a **FastAPI web application**, a **transformer-based embedding and retrieval pipeline**, and a **data analytics module** for interview question analysis.
+An AI-powered interview preparation platform. Users register upcoming coding interviews, receive a personalized problem roadmap, and practice with a Socratic tutor chatbot that guides them through each problem.
 
 ---
 
@@ -8,21 +8,18 @@ An interview preparation platform that combines a **FastAPI web application**, a
 
 - [Project Structure](#project-structure)
 - [Architecture Overview](#architecture-overview)
+- [Quick Start](#quick-start)
 - [Application — FastAPI Web App](#application--fastapi-web-app)
   - [Routes](#routes)
-  - [Authentication Flow](#authentication-flow)
+  - [Authentication](#authentication)
   - [Database Schema](#database-schema)
-- [Embeddings — ML Retrieval Pipeline](#embeddings--ml-retrieval-pipeline)
-  - [Embedder](#embedder)
-  - [Searcher](#searcher)
-  - [How the Embedding Math Works](#how-the-embedding-math-works)
-  - [Utilities](#utilities)
-  - [Configuration](#configuration)
-  - [Tests](#tests)
-- [Layout Model — Data Processing & Analytics](#layout-model--data-processing--analytics)
+  - [Pages](#pages)
+- [RAG — Retrieval & Recommendation](#rag--retrieval--recommendation)
+- [Embeddings — Vector Pipeline](#embeddings--vector-pipeline)
+- [Tutor — Socratic Chatbot Agent](#tutor--socratic-chatbot-agent)
+- [Datasets](#datasets)
+- [Scripts](#scripts)
 - [Dependencies](#dependencies)
-- [Getting Started](#getting-started)
-- [Notes for Contributors](#notes-for-contributors)
 
 ---
 
@@ -30,47 +27,63 @@ An interview preparation platform that combines a **FastAPI web application**, a
 
 ```
 algorithmic-reasoning-language-model/
-├── .gitignore
-├── README.md
-├── requirements.txt                      # Web app dependencies (pinned)
-│
-├── application/                          # FastAPI web application
-│   ├── main.py                           # App entry point & routes
-│   ├── auth.py                           # Password hashing & JWT tokens
-│   ├── database.py                       # SQLAlchemy engine & session
-│   ├── models.py                         # ORM models (User, Company, Interview)
-│   ├── test_main.http                    # HTTP client scratch file
+├── application/                      # FastAPI web application
+│   ├── main.py                       # App entry point, mounts routers
+│   ├── database.py                   # SQLAlchemy engine & session
+│   ├── models.py                     # ORM models
+│   ├── security.py                   # Password hashing & JWT
+│   ├── deps.py                       # Shared dependencies (templates, auth helper)
+│   ├── routers/
+│   │   ├── auth.py                   # /login, /register, /logout
+│   │   ├── dashboard.py              # /dashboard, /dashboard/add
+│   │   └── interview.py              # /interview/.../roadmap, .../problem
 │   ├── static/
-│   │   └── style.css                     # Global stylesheet
+│   │   └── style.css                 # Global stylesheet
 │   └── templates/
-│       ├── base.html                     # Jinja2 base layout
-│       ├── home.html                     # Landing page
-│       ├── login.html                    # Login form
-│       ├── register.html                 # Registration form
-│       └── dashboard.html                # Authenticated dashboard
+│       ├── base.html                 # Base layout with nav & footer
+│       ├── home.html                 # Landing page
+│       ├── login.html                # Login form
+│       ├── register.html             # Registration form
+│       ├── dashboard.html            # Interview list with progress bars
+│       ├── roadmap.html              # Problem checklist for an interview
+│       └── problem.html              # Split view: problem + tutor chat
 │
-├── embeddings/                           # ML embedding & retrieval pipeline
+├── rag/                              # Retrieval & recommendation
+│   ├── __init__.py
+│   └── recommender.py                # Selects problems for a roadmap
+│
+├── embeddings/                       # ML embedding & search pipeline
 │   ├── config/
-│   │   └── config.yaml                   # Model, FAISS & logging settings
+│   │   └── config.yaml               # Model, FAISS & logging config
 │   ├── src/
-│   │   ├── __init__.py
 │   │   ├── pipeline/
-│   │   │   ├── __init__.py
-│   │   │   ├── embedder.py               # Text → vector embeddings
-│   │   │   └── searcher.py               # FAISS similarity search
+│   │   │   ├── embedder.py           # Text -> vector embeddings (HuggingFace)
+│   │   │   └── searcher.py           # FAISS similarity search
 │   │   └── utils/
-│   │       ├── __init__.py
-│   │       ├── config.py                 # YAML config loader
-│   │       ├── download_model.py         # HuggingFace model downloader
-│   │       └── logger.py                 # Loguru structured file logging
-│   └── tests/
-│       ├── conftest.py                   # Pytest path setup
-│       ├── test_pipeline_embedder.py
-│       ├── test_pipeline_searcher.py
-│       └── test_utils_logger.py
+│   │       ├── config.py             # YAML config loader
+│   │       ├── download_model.py     # HuggingFace model downloader
+│   │       └── logger.py             # Loguru structured logging
+│   └── tests/                        # Pytest suite (fully mocked)
 │
-└── layout-model/                         # Data analytics & future ML
-    └── data_processing.py                # Pandas aggregation pipeline
+├── tutor/                            # Socratic chatbot agent (planned)
+│   └── __init__.py
+│
+├── datasets/                         # Source data (tracked in git)
+│   ├── dataset.csv                   # Raw LeetCode problems per company
+│   ├── dataset_aggregated.csv        # Difficulty distributions per company/days
+│   └── dataset_enriched.jsonl        # Problems with scraped descriptions
+│
+├── scripts/                          # Setup & maintenance scripts
+│   ├── seed_database.py              # Populate DB from dataset
+│   ├── enrich_dataset.py             # Scrape problem descriptions from LeetCode
+│   ├── process_distributions.py      # Aggregate difficulty distributions
+│   └── build_vector_index.py         # Build ChromaDB index (placeholder)
+│
+├── data/                             # Runtime artifacts (gitignored)
+│   └── app.db                        # SQLite database
+│
+├── requirements.txt                  # Python dependencies
+└── README.md
 ```
 
 ---
@@ -78,299 +91,213 @@ algorithmic-reasoning-language-model/
 ## Architecture Overview
 
 ```
-┌────────────────────┐      ┌────────────────────────┐      ┌────────────────────┐
-│   application/     │      │     embeddings/         │      │   layout-model/    │
-│                    │      │                         │      │                    │
-│   FastAPI web app  │      │   ML retrieval pipeline │      │   Analytics script │
-│   Auth + dashboard │      │   PyTorch + FAISS       │      │   Pandas + NumPy   │
-│   SQLite via ORM   │      │   HuggingFace models    │      │   Future SVD       │
-│                    │      │                         │      │                    │
-└────────────────────┘      └────────────────────────┘      └────────────────────┘
-         │                            │                              │
-         │         (not yet wired)    │           (not yet wired)    │
-         └────────────────────────────┴──────────────────────────────┘
+User registers interview
+        │
+        ▼
+┌─────────────────────┐
+│    application/      │  FastAPI web app
+│    routers/          │  Auth, dashboard, interview routes
+└────────┬────────────┘
+         │
+    ┌────┴──────┐
+    ▼           ▼
+┌────────┐  ┌────────┐
+│  rag/  │  │ tutor/ │
+│        │  │        │
+│ Picks  │  │Socratic│
+│problems│  │chatbot │
+│for the │  │with one│
+│roadmap │  │tool    │
+└───┬────┘  └────────┘
+    │
+    ▼
+┌────────────┐
+│ embeddings/│  Text → vectors → FAISS search
+└────────────┘
 ```
 
-The three modules are currently **independent**. The intended architecture is to wire the
-embeddings search into the web app (so users can search for similar interview questions)
-and integrate the layout-model analytics (difficulty distributions by company and timeframe).
+**Dependency flow:** `application` → `rag` → `embeddings`. The `tutor` module is called directly by the application. Each module has a single clear responsibility.
+
+---
+
+## Quick Start
+
+### 1. Install dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### 2. Seed the database
+
+This reads `datasets/dataset_enriched.jsonl` (or falls back to `datasets/dataset.csv`) and populates the SQLite database at `data/app.db` with 464 companies and ~11K problems.
+
+```bash
+python scripts/seed_database.py
+```
+
+### 3. Run the app
+
+```bash
+cd application
+uvicorn main:app --reload
+```
+
+Open [http://127.0.0.1:8000](http://127.0.0.1:8000) in your browser.
+
+### 4. Use the app
+
+1. **Register** an account
+2. **Add an interview** — pick a company and enter how many days until the interview
+3. A **roadmap** of 10 problems is generated automatically
+4. Click **Roadmap →** to see your problem checklist
+5. Click a problem to open the **problem detail page** with the tutor chat panel
+6. Check off problems as you solve them — progress is tracked on the dashboard
 
 ---
 
 ## Application — FastAPI Web App
 
-A server-rendered interview-tracking web application. Users register, log in, and manage
-upcoming interviews on a personal dashboard.
+Server-rendered web application using Jinja2 templates and SQLite.
 
-**Tech stack:**
-
-| Library | Role |
-|---|---|
-| **FastAPI** | Async web framework, routing, dependency injection |
-| **Jinja2** | Server-side HTML templating |
-| **SQLAlchemy** | ORM over local SQLite (`application/data/app.db`) |
-| **Passlib + bcrypt** | Password hashing |
-| **python-jose** | JWT creation and verification |
-| **Uvicorn** | ASGI server |
+**Tech stack:** FastAPI, Jinja2, SQLAlchemy, Passlib (bcrypt), python-jose (JWT), Uvicorn.
 
 ### Routes
 
 | Method | Path | Description |
 |---|---|---|
-| `GET` | `/` | Landing / home page |
-| `GET` | `/login` | Login form |
-| `POST` | `/login` | Validate credentials, set JWT cookie, redirect to dashboard |
-| `GET` | `/register` | Registration form |
-| `POST` | `/register` | Create user, set JWT cookie, redirect to dashboard |
-| `GET` | `/dashboard` | *Requires auth* — lists companies and user's interviews |
-| `POST` | `/dashboard/add` | *Requires auth* — creates a new interview entry |
-| `GET` | `/logout` | Clears the auth cookie |
+| `GET` | `/` | Landing page |
+| `GET/POST` | `/login` | Login |
+| `GET/POST` | `/register` | Registration |
+| `GET` | `/dashboard` | Interview list with progress |
+| `POST` | `/dashboard/add` | Create interview + generate roadmap |
+| `GET` | `/interview/{id}/roadmap` | Problem checklist |
+| `POST` | `/interview/{id}/roadmap/{rid}/toggle` | Toggle problem completion |
+| `GET` | `/interview/{id}/problem/{pid}` | Problem detail + tutor chat |
+| `GET` | `/logout` | Clear auth cookie |
 
-### Authentication Flow
+### Authentication
 
-1. User submits email + password via the registration or login form.
-2. On **register**, the password is bcrypt-hashed and stored in the `users` table.
-3. On **login**, the submitted password is verified against the stored hash.
-4. A **JWT** is created with the user's email as the `sub` claim and an expiry of 60 minutes.
-5. The JWT is set as an **HTTP-only cookie** named `access_token`.
-6. Every protected route calls `get_current_user()`, which decodes the cookie and loads the `User` from the database.
+- Passwords are bcrypt-hashed before storage
+- JWT in an HTTP-only cookie (`access_token`, 60 min expiry)
+- `get_current_user()` in `deps.py` decodes the cookie on every protected route
 
 ### Database Schema
 
-Three tables managed by SQLAlchemy:
-
 ```
-┌──────────────┐       ┌──────────────────┐       ┌──────────────┐
-│    users     │       │   interviews     │       │  companies   │
-├──────────────┤       ├──────────────────┤       ├──────────────┤
-│ id       PK  │──┐    │ id           PK  │    ┌──│ id       PK  │
-│ email        │  └───>│ user_id      FK  │    │  │ name         │
-│ hashed_pwd   │       │ company_id   FK  │<───┘  └──────────────┘
-└──────────────┘       │ days_until       │
-                       └──────────────────┘
+users                interviews              companies
+┌──────────────┐     ┌──────────────────┐    ┌──────────────┐
+│ id       PK  │──┐  │ id           PK  │ ┌──│ id       PK  │
+│ email        │  └─>│ user_id      FK  │ │  │ name         │
+│ hashed_pwd   │     │ company_id   FK  │<┘  └──────────────┘
+└──────────────┘     │ days_until       │         │
+                     └────────┬─────────┘         │
+                              │                   │
+                     roadmaps │         interview_problems
+                     ┌────────┴─────┐   ┌─────────┴──────────┐
+                     │ id       PK  │   │ id            PK   │
+                     │ interview_id │   │ title              │
+                     │ problem_id   │──>│ difficulty          │
+                     │ is_completed │   │ description         │
+                     └──────────────┘   │ url                 │
+                                        │ topics              │
+                                        │ acceptance_rate     │
+                                        │ frequency           │
+                                        │ preparation_days    │
+                                        │ company_id     FK   │
+                                        └─────────────────────┘
 ```
 
-- **`users`** — `id`, `email` (unique), `hashed_password`
-- **`companies`** — `id`, `name` (unique)
-- **`interviews`** — `id`, `days_until`, `user_id` → users, `company_id` → companies
+### Pages
 
-On startup, `seed_db()` inserts a default company (*"ActuallyGoodAIAds"*) if none exists.
+- **Dashboard** — schedule interviews, see progress bars and status badges (Urgent/Soon/On Track), link to each roadmap
+- **Roadmap** — checklist of problems with difficulty tags, topic labels, circular progress ring, and completion toggles
+- **Problem detail** — split layout: problem description + topic chips on the left, Socratic tutor chat panel on the right, link to solve on LeetCode
 
 ---
 
-## Embeddings — ML Retrieval Pipeline
+## RAG — Retrieval & Recommendation
 
-A library-style module for embedding text into dense vectors and performing similarity
-search over a FAISS index. This is the AI core of the project.
+`rag/recommender.py` — selects which problems a user should solve for a given company and timeline.
 
-**Tech stack:**
+**Current implementation:** mock that picks 10 random problems from the company.
 
-| Library | Role |
-|---|---|
-| **PyTorch** | Tensor operations, GPU/MPS/CPU device management |
-| **HuggingFace Transformers** | Pre-trained model loading (`AutoModel`, `AutoTokenizer`) |
-| **FAISS** | High-performance vector similarity search |
-| **HuggingFace Hub** | Model weight downloads |
-| **Loguru** | Structured JSON file logging with rotation |
-| **PyYAML** | Configuration loading |
-| **Rich** | Terminal spinner/status UI during downloads |
-
-### Embedder
-
-**Class:** `Embedder` in `embeddings/src/pipeline/embedder.py`
-
-- Loads the model specified in `config.yaml` (default: **`google/embeddinggemma-300m`**)
-  — either from a local cache or directly from HuggingFace.
-- Automatically selects the best available device: **CUDA GPU → Apple MPS → CPU**.
-- `embed(texts)` accepts a string or list of strings and returns an `np.ndarray` of
-  shape `(N, dim)` with **L2-normalized float32** vectors.
-- Processes inputs in configurable **batches** (default 32) to prevent out-of-memory errors.
-
-### Searcher
-
-**Class:** `Searcher` in `embeddings/src/pipeline/searcher.py`
-
-- Reads a pre-built FAISS index (`index.faiss`) and companion metadata (`metadata.pkl`)
-  from the configured directory.
-- **Lazy-loads** — files are not read until the first `.search()` call.
-- `search(query_vector, top_k=5)` returns the `top_k` most similar entries as a list of
-  dicts, each containing metadata fields plus a `distance` score.
-
-### How the Embedding Math Works
-
-```
-  Input text
-      │
-      ▼
-┌─────────────────┐
-│   Transformer    │    Tokenize → forward pass → one vector per token
-│   (EmbedGemma)   │
-└────────┬────────┘
-         │
-         ▼
-┌─────────────────┐
-│   Mean Pooling   │    Average token vectors (masked by attention) → 1 vector per text
-└────────┬────────┘
-         │
-         ▼
-┌─────────────────┐
-│ L2 Normalization │    Scale to unit length so inner product = cosine similarity
-└────────┬────────┘
-         │
-         ▼
-   Dense vector (float32, unit norm)
-         │
-         ▼
-┌─────────────────┐
-│   FAISS Index    │    IndexFlatIP (inner product on unit vectors ≈ cosine similarity)
-│   .search()      │    → top-k most similar entries
-└─────────────────┘
-```
-
-### Utilities
-
-| Module | Description |
-|---|---|
-| `config.py` | Resolves `PROJECT_ROOT` (the `embeddings/` folder) and provides `load_config()` with `lru_cache` for single-parse YAML loading |
-| `download_model.py` | Wraps `huggingface_hub.snapshot_download` with error handling for gated/restricted models and a Rich progress spinner |
-| `logger.py` | Configures Loguru with a file-only JSON sink, 100 MB rotation, 30-day retention, and zip compression |
-
-### Configuration
-
-All settings live in `embeddings/config/config.yaml`:
-
-```yaml
-embedding:
-  model_id: "google/embeddinggemma-300m"
-  local_model_dir: "./models/embeddinggemma-300m"
-  batch_size: 32
-
-database:
-  faiss:
-    path: "./data/faiss_index"       # index.faiss + metadata.pkl
-    max_size_gb: 10
-  sqlite:
-    path: "./data/metadata.db"       # reserved for future use
-    max_size_gb: 100
-
-logging:
-  log_file: "./logs/app.log"
-  rotation: "100 MB"
-  retention: "30 days"
-  level: "INFO"
-```
-
-### Tests
-
-Located in `embeddings/tests/`. All transformer and FAISS dependencies are **fully mocked**,
-so tests run without model weights or index files on disk.
-
-| Test file | Covers |
-|---|---|
-| `test_pipeline_embedder.py` | Embedder init, mean pooling logic, embed output shape |
-| `test_pipeline_searcher.py` | Searcher paths, lazy loading, FAISS search results |
-| `test_utils_logger.py` | Config caching, logger setup and binding |
+**Planned implementation:**
+1. **PCHIP interpolation** on `datasets/dataset_aggregated.csv` to determine how many easy/medium/hard problems to recommend for the given number of days
+2. **ChromaDB vector search** to retrieve the most relevant problems per difficulty, using the `embeddings/` module to embed query text
 
 ---
 
-## Layout Model — Data Processing & Analytics
+## Embeddings — Vector Pipeline
 
-A standalone script (`layout-model/data_processing.py`) that processes interview-related
-data from a CSV into aggregated statistics.
+Library-style module for embedding text into dense vectors and performing similarity search.
 
-**Pipeline:**
+**Tech stack:** PyTorch, HuggingFace Transformers (`google/embeddinggemma-300m`), FAISS, Loguru.
 
-1. Reads `../embeddings/dataset/dataset.csv` (not checked into the repo).
-2. Filters to four columns: `company`, `difficulty`, `preparation_days`, `title`.
-3. Renames `preparation_days` → `days_until`.
-4. Groups by `(company, days_until, difficulty)` and counts interview titles.
-5. Pivots difficulty levels into separate columns: `easycount`, `mediumcount`, `hardcount`.
-6. Writes the result to `dataset_aggregated.csv`.
+- **`Embedder`** — loads a transformer model, performs mean pooling + L2 normalization, outputs `np.ndarray` vectors
+- **`Searcher`** — lazy-loads a FAISS index + metadata pickle, returns top-k similar entries
+- **Config** — `embeddings/config/config.yaml` (model ID, batch size, index paths, logging)
+- **Tests** — fully mocked, no model weights needed to run
 
-**Planned feature:** `predict_missing_days_svd(df, value_col, k_components=3)` is a stub
-for **SVD-based matrix completion** — predicting interview difficulty distributions for
-time windows where data is missing.
+**Note:** This module requires additional dependencies not in the root `requirements.txt`:
+
+```bash
+pip install torch transformers faiss-cpu pyyaml loguru huggingface_hub rich
+```
+
+---
+
+## Tutor — Socratic Chatbot Agent
+
+**Status:** UI placeholder is implemented. The chat panel is visible on the problem detail page with a message input and placeholder responses.
+
+**Planned architecture:**
+- **`agent.py`** — single-tool agent that decides when to call the solution generator
+- **`solver.py`** — fine-tuned SLM that produces ground-truth solutions
+- **`prompts/`** — Socratic system prompt + few-shot examples
+- The tutor knows the solution but never reveals it directly — it guides the student with questions
+
+---
+
+## Datasets
+
+All source data lives in `datasets/` and is tracked in git.
+
+| File | Description |
+|---|---|
+| `dataset.csv` | ~11K LeetCode problems with company, difficulty, topics, frequency, acceptance rate, and preparation days |
+| `dataset_aggregated.csv` | Aggregated counts of easy/medium/hard problems per company per time bucket (30/90/180/360 days) |
+| `dataset_enriched.jsonl` | Same as `dataset.csv` but enriched with problem descriptions scraped from LeetCode (JSONL format) |
+
+---
+
+## Scripts
+
+Run all scripts from the **repository root**.
+
+| Script | Command | Description |
+|---|---|---|
+| **Seed database** | `python scripts/seed_database.py` | Loads problems and companies into SQLite. Prefers `dataset_enriched.jsonl`, falls back to `dataset.csv`. Idempotent — skips if already seeded. |
+| **Enrich dataset** | `python scripts/enrich_dataset.py` | Scrapes problem descriptions from LeetCode's GraphQL API. Resumable with checkpoints. Output: `datasets/dataset_enriched.jsonl`. |
+| **Process distributions** | `python scripts/process_distributions.py` | Aggregates the raw dataset into difficulty distributions. Output: `datasets/dataset_aggregated.csv`. |
+| **Build vector index** | `python scripts/build_vector_index.py` | Placeholder for building the ChromaDB vector index from the database. |
 
 ---
 
 ## Dependencies
 
-### Declared in root `requirements.txt` (web app)
+### Root `requirements.txt` (web app + scripts)
 
-FastAPI, Starlette, Uvicorn, Jinja2, SQLAlchemy, Pydantic, Passlib (bcrypt),
-python-jose, python-multipart, numpy, pandas, and their transitive dependencies.
+FastAPI, SQLAlchemy, Jinja2, Passlib, python-jose, Uvicorn, pandas, numpy, beautifulsoup4, requests.
 
-### Required by `embeddings/` (not yet in a requirements file)
+### Additional (embeddings module)
 
-| Package | Purpose |
-|---|---|
-| `torch` | Tensor operations, device management |
-| `transformers` | HuggingFace model loading |
-| `faiss-cpu` or `faiss-gpu` | Vector similarity search |
-| `PyYAML` | Config parsing |
-| `loguru` | Structured logging |
-| `huggingface_hub` | Model downloads |
-| `rich` | Terminal UI |
-| `pytest` | Testing |
-
----
-
-## Getting Started
-
-### Web Application
-
-```bash
-cd application
-pip install -r ../requirements.txt
-uvicorn main:app --reload
+```
+torch, transformers, faiss-cpu, pyyaml, loguru, huggingface_hub, rich
 ```
 
-The app creates `application/data/app.db` (SQLite) on first run and seeds it with a
-default company. Visit `http://127.0.0.1:8000`.
+### Additional (planned — RAG + tutor)
 
-### Embeddings Pipeline
-
-```bash
-cd embeddings
-pip install torch transformers faiss-cpu pyyaml loguru huggingface_hub rich
 ```
-
-Usage (programmatic):
-
-```python
-from src.pipeline import Embedder, Searcher
-
-embedder = Embedder()
-vectors = embedder.embed(["How do you design a distributed cache?"])
-
-searcher = Searcher()
-results = searcher.search(vectors, top_k=5)
+chromadb, openai (or equivalent LLM client)
 ```
-
-> **Note:** The FAISS index (`index.faiss` + `metadata.pkl`) must be built separately.
-> No index-building script exists in the repo yet.
-
-### Data Processing
-
-```bash
-cd layout-model
-python data_processing.py
-```
-
-> Requires the dataset CSV at `../embeddings/dataset/dataset.csv`.
-
----
-
-## Notes for Contributors
-
-- The three modules (`application/`, `embeddings/`, `layout-model/`) are currently
-  **independent** — no imports exist between them yet.
-- The `SECRET_KEY` in `auth.py` is hardcoded — move it to an environment variable
-  before any deployment.
-- `main.py` prints plaintext passwords during registration (`print(password)`) —
-  this should be removed.
-- The dataset CSV and model weights are **gitignored** and not in the repository.
-- The `embeddings/` module needs its own `requirements.txt`.
-- `test_main.http` references a route (`/hello/User`) that does not exist in `main.py`.
-- The SQLite metadata path in `config.yaml` (`database.sqlite`) is reserved but not
-  currently used by any Python code — metadata is stored as pickle alongside the FAISS index.
