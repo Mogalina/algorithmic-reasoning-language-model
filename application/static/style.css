@@ -589,7 +589,7 @@ table td {
 
 .problem-layout {
     display: grid;
-    grid-template-columns: 1fr 380px;
+    grid-template-columns: 1fr 1fr;
     height: calc(100vh - 57px);
     overflow: hidden;
 }
@@ -789,6 +789,49 @@ table td {
 
 .tutor-send-btn:hover {
     background: #444;
+}
+
+.tutor-send-btn:disabled {
+    cursor: not-allowed;
+}
+
+.tutor-thinking {
+    color: #999;
+    font-style: italic;
+}
+
+@keyframes tutor-pulse {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+}
+
+.tutor-thinking {
+    animation: tutor-pulse 1.2s ease-in-out infinite;
+}
+
+.tutor-error {
+    color: #c0392b;
+}
+
+.tutor-msg code {
+    background: #f0f0f0;
+    padding: 0.1rem 0.35rem;
+    border-radius: 4px;
+    font-size: 0.85rem;
+}
+
+.tutor-msg pre {
+    background: #f0f0f0;
+    border-radius: 6px;
+    padding: 0.6rem 0.8rem;
+    overflow-x: auto;
+    margin: 0.5rem 0;
+    font-size: 0.83rem;
+}
+
+.tutor-msg pre code {
+    background: none;
+    padding: 0;
 }
 
 /* ============================================================

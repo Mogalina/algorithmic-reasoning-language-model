@@ -59,30 +59,72 @@
 </div>
 
 <script>
-function sendMessage(e) {
+const PROBLEM_ID = {{ problem.id }};
+let chatHistory = [];
+
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+function appendMessage(role, html) {
+    const messages = document.getElementById('tutor-messages');
+    const msg = document.createElement('div');
+    msg.className = 'tutor-msg tutor-msg--' + role;
+    msg.innerHTML = html;
+    messages.appendChild(msg);
+    messages.scrollTop = messages.scrollHeight;
+    return msg;
+}
+
+function setInputEnabled(enabled) {
+    const input = document.getElementById('tutor-input');
+    const btn = document.querySelector('.tutor-send-btn');
+    input.disabled = !enabled;
+    btn.disabled = !enabled;
+    btn.style.opacity = enabled ? '1' : '0.5';
+}
+
+async function sendMessage(e) {
     e.preventDefault();
     const input = document.getElementById('tutor-input');
-    const messages = document.getElementById('tutor-messages');
     const text = input.value.trim();
     if (!text) return false;
 
-    const userMsg = document.createElement('div');
-    userMsg.className = 'tutor-msg tutor-msg--user';
-    userMsg.innerHTML = '<p>' + text.replace(/</g, '&lt;') + '</p>';
-    messages.appendChild(userMsg);
-
+    appendMessage('user', '<p>' + escapeHtml(text) + '</p>');
+    chatHistory.push({ role: 'user', content: text });
     input.value = '';
+    setInputEnabled(false);
 
-    // Placeholder bot response until the tutor agent is wired
-    setTimeout(() => {
-        const botMsg = document.createElement('div');
-        botMsg.className = 'tutor-msg tutor-msg--assistant';
-        botMsg.innerHTML = '<p>The tutor agent is not connected yet. This is a placeholder response.</p><p>Once wired, I\'ll ask you guiding questions to help you discover the solution yourself.</p>';
-        messages.appendChild(botMsg);
-        messages.scrollTop = messages.scrollHeight;
-    }, 600);
+    const thinking = appendMessage('assistant', '<p class="tutor-thinking">Thinking...</p>');
 
-    messages.scrollTop = messages.scrollHeight;
+    try {
+        const res = await fetch('/api/tutor/chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ problem_id: PROBLEM_ID, messages: chatHistory }),
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+            thinking.innerHTML = '<p class="tutor-error">Error: ' + escapeHtml(data.error || 'Something went wrong') + '</p>';
+        } else {
+            const formatted = data.reply
+                .replace(/```(\w*)\n([\s\S]*?)```/g, '<pre><code>$2</code></pre>')
+                .replace(/`([^`]+)`/g, '<code>$1</code>')
+                .replace(/\n/g, '<br>');
+            thinking.innerHTML = '<p>' + formatted + '</p>';
+            chatHistory.push({ role: 'assistant', content: data.reply });
+        }
+    } catch (err) {
+        thinking.innerHTML = '<p class="tutor-error">Connection error. Please try again.</p>';
+    }
+
+    setInputEnabled(true);
+    document.getElementById('tutor-input').focus();
+    document.getElementById('tutor-messages').scrollTop = document.getElementById('tutor-messages').scrollHeight;
     return false;
 }
 </script>
