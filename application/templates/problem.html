@@ -23,7 +23,7 @@
 
         <div class="problem-description">
             {% if problem.description %}
-            {{ problem.description | replace('\n', '<br>') | safe }}
+            {{ problem.description | regex_replace('\n{2,}', '</br>') | safe }}
             {% else %}
             <div class="empty-state">
                 Problem description not available yet.<br>
@@ -48,7 +48,8 @@
         <div class="tutor-messages" id="tutor-messages">
             <div class="tutor-msg tutor-msg--assistant">
                 <p>Hi! I'm your Socratic tutor for <strong>{{ problem.title }}</strong>.</p>
-                <p>Try solving it first — when you get stuck, describe what you've tried and I'll guide you with questions rather than answers.</p>
+                <p>Try solving it first — when you get stuck, describe what you've tried and I'll guide you with
+                    questions rather than answers.</p>
             </div>
         </div>
         <form class="tutor-input-form" id="tutor-form" onsubmit="return sendMessage(event)">
@@ -59,73 +60,73 @@
 </div>
 
 <script>
-const PROBLEM_ID = {{ problem.id }};
-let chatHistory = [];
+    const PROBLEM_ID = {{ problem.id }};
+    let chatHistory = [];
 
-function escapeHtml(text) {
-    const div = document.createElement('div');
-    div.textContent = text;
-    return div.innerHTML;
-}
-
-function appendMessage(role, html) {
-    const messages = document.getElementById('tutor-messages');
-    const msg = document.createElement('div');
-    msg.className = 'tutor-msg tutor-msg--' + role;
-    msg.innerHTML = html;
-    messages.appendChild(msg);
-    messages.scrollTop = messages.scrollHeight;
-    return msg;
-}
-
-function setInputEnabled(enabled) {
-    const input = document.getElementById('tutor-input');
-    const btn = document.querySelector('.tutor-send-btn');
-    input.disabled = !enabled;
-    btn.disabled = !enabled;
-    btn.style.opacity = enabled ? '1' : '0.5';
-}
-
-async function sendMessage(e) {
-    e.preventDefault();
-    const input = document.getElementById('tutor-input');
-    const text = input.value.trim();
-    if (!text) return false;
-
-    appendMessage('user', '<p>' + escapeHtml(text) + '</p>');
-    chatHistory.push({ role: 'user', content: text });
-    input.value = '';
-    setInputEnabled(false);
-
-    const thinking = appendMessage('assistant', '<p class="tutor-thinking">Thinking...</p>');
-
-    try {
-        const res = await fetch('/api/tutor/chat', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ problem_id: PROBLEM_ID, messages: chatHistory }),
-        });
-
-        const data = await res.json();
-
-        if (!res.ok) {
-            thinking.innerHTML = '<p class="tutor-error">Error: ' + escapeHtml(data.error || 'Something went wrong') + '</p>';
-        } else {
-            const formatted = data.reply
-                .replace(/```(\w*)\n([\s\S]*?)```/g, '<pre><code>$2</code></pre>')
-                .replace(/`([^`]+)`/g, '<code>$1</code>')
-                .replace(/\n/g, '<br>');
-            thinking.innerHTML = '<p>' + formatted + '</p>';
-            chatHistory.push({ role: 'assistant', content: data.reply });
-        }
-    } catch (err) {
-        thinking.innerHTML = '<p class="tutor-error">Connection error. Please try again.</p>';
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
     }
 
-    setInputEnabled(true);
-    document.getElementById('tutor-input').focus();
-    document.getElementById('tutor-messages').scrollTop = document.getElementById('tutor-messages').scrollHeight;
-    return false;
-}
+    function appendMessage(role, html) {
+        const messages = document.getElementById('tutor-messages');
+        const msg = document.createElement('div');
+        msg.className = 'tutor-msg tutor-msg--' + role;
+        msg.innerHTML = html;
+        messages.appendChild(msg);
+        messages.scrollTop = messages.scrollHeight;
+        return msg;
+    }
+
+    function setInputEnabled(enabled) {
+        const input = document.getElementById('tutor-input');
+        const btn = document.querySelector('.tutor-send-btn');
+        input.disabled = !enabled;
+        btn.disabled = !enabled;
+        btn.style.opacity = enabled ? '1' : '0.5';
+    }
+
+    async function sendMessage(e) {
+        e.preventDefault();
+        const input = document.getElementById('tutor-input');
+        const text = input.value.trim();
+        if (!text) return false;
+
+        appendMessage('user', '<p>' + escapeHtml(text) + '</p>');
+        chatHistory.push({ role: 'user', content: text });
+        input.value = '';
+        setInputEnabled(false);
+
+        const thinking = appendMessage('assistant', '<p class="tutor-thinking">Thinking...</p>');
+
+        try {
+            const res = await fetch('/api/tutor/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ problem_id: PROBLEM_ID, messages: chatHistory }),
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                thinking.innerHTML = '<p class="tutor-error">Error: ' + escapeHtml(data.error || 'Something went wrong') + '</p>';
+            } else {
+                const formatted = data.reply
+                    .replace(/```(\w*)\n([\s\S]*?)```/g, '<pre><code>$2</code></pre>')
+                    .replace(/`([^`]+)`/g, '<code>$1</code>')
+                    .replace(/\n/g, '<br>');
+                thinking.innerHTML = '<p>' + formatted + '</p>';
+                chatHistory.push({ role: 'assistant', content: data.reply });
+            }
+        } catch (err) {
+            thinking.innerHTML = '<p class="tutor-error">Connection error. Please try again.</p>';
+        }
+
+        setInputEnabled(true);
+        document.getElementById('tutor-input').focus();
+        document.getElementById('tutor-messages').scrollTop = document.getElementById('tutor-messages').scrollHeight;
+        return false;
+    }
 </script>
 {% endblock %}

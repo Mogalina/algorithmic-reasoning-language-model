@@ -44,9 +44,23 @@ def extract_title_slug(url: str) -> str:
 
 
 def html_to_text(html: str) -> str:
-    """Convert HTML problem body to clean plain text."""
+    """Convert HTML problem body to clean plain text, preserving superscripts and subscripts."""
     soup = BeautifulSoup(html, "html.parser")
+    
+    # Handle superscripts and subscripts
+    for sup in soup.find_all("sup"):
+        sup.replace_with(f"^{sup.get_text().strip()}")
+    for sub in soup.find_all("sub"):
+        sub.replace_with(f"_{sub.get_text().strip()}")
+        
     text = soup.get_text(separator="\n")
+    
+    # Clean up formatting:
+    # 1. Remove newlines immediately before or after ^ or _ (common in 10\n^5)
+    text = re.sub(r'\n+(\^|_)', r'\1', text)
+    text = re.sub(r'(\^|_)\n+', r'\1', text)
+    
+    # 2. Collapse excessive newlines
     text = re.sub(r"\n{3,}", "\n\n", text)
     return text.strip()
 
@@ -127,29 +141,49 @@ def enrich():
         rows = list(reader)
 
     unique_slugs = {extract_title_slug(row["link"]) for row in rows}
+    # Check if a body needs re-scraping (missing exponents or empty)
+    def needs_re_scrape(body: str) -> bool:
+        if not body: return True
+        # Common pattern where exponents were lost: "10 4", "10 5", "10 9"
+        if re.search(r'10\s+[459]', body): return True
+        # If it has newlines before ^, it's also corrupted
+        if '\n^' in body or '\n_' in body: return True
+        return False
+
     already_scraped = load_already_scraped()
-    slugs_to_scrape = sorted(unique_slugs - set(already_scraped.keys()))
+    
+    # Identify unique slugs that either haven't been scraped or were corrupted
+    slug_to_body = {}
+    slugs_to_scrape = set()
+    
+    unique_slugs = {extract_title_slug(row["link"]) for row in rows}
+    
+    for slug in unique_slugs:
+        body = already_scraped.get(slug, "")
+        if needs_re_scrape(body):
+            slugs_to_scrape.add(slug)
+        else:
+            slug_to_body[slug] = body
+
+    slugs_to_scrape = sorted(list(slugs_to_scrape))
 
     print(f"Total rows: {len(rows)}")
     print(f"Unique problems: {len(unique_slugs)}")
-    print(f"Already scraped: {len(already_scraped)}")
-    print(f"Remaining to scrape: {len(slugs_to_scrape)}")
+    print(f"Already scraped (clean): {len(slug_to_body)}")
+    print(f"Remaining (or corrupted) to scrape: {len(slugs_to_scrape)}")
 
     if not slugs_to_scrape:
-        print("Nothing to scrape. Writing final output...")
-        _write_output(rows, already_scraped)
+        print("Nothing to scrape or fix. Writing final output...")
+        _write_output(rows, slug_to_body)
         return
 
     session = create_session()
-    slug_to_body = dict(already_scraped)
-
     for i, slug in enumerate(slugs_to_scrape, 1):
         print(f"  [{i}/{len(slugs_to_scrape)}] Scraping: {slug}")
         body = scrape_problem_body(session, slug)
         slug_to_body[slug] = body
 
-        if i % 50 == 0:
-            print(f"  ... checkpoint at {i} problems ...")
+        if i % 1 == 0:
             _write_output(rows, slug_to_body)
 
         time.sleep(DELAY_BETWEEN_REQUESTS)

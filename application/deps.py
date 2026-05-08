@@ -1,3 +1,5 @@
+import re
+
 from fastapi import Request
 from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
@@ -6,6 +8,7 @@ from models import User
 from security import decode_token
 
 templates = Jinja2Templates(directory="templates")
+templates.env.filters["regex_replace"] = lambda s, pat, repl: re.sub(pat, repl, s)
 
 
 def get_current_user(request: Request, db: Session):
