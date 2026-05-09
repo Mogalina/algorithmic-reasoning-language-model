@@ -41,3 +41,5 @@ accelerate>=0.29.0
 sentencepiece
 protobuf
 huggingface_hub
+trl
+bitsandbytes
