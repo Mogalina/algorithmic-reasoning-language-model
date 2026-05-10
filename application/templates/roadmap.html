@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}Roadmap — {{ interview.company.name }} - InterviewPrep{% endblock %}
+{% block nav %}
+<a href="/dashboard">Dashboard</a>
+<a href="/logout">Logout</a>
+{% endblock %}
+{% block content %}
+<div class="roadmap-container">
+    <a href="/dashboard" class="back-link">&larr; Back to Dashboard</a>
+
+    <div class="roadmap-header">
+        <div>
+            <h1>{{ interview.company.name }}</h1>
+            <p class="roadmap-subtitle">{{ interview.days_until }} days &middot; {{ roadmap_items | length }} problems</p>
+        </div>
+        <div class="roadmap-stats">
+            {% set done = roadmap_items | selectattr("is_completed") | list | length %}
+            {% set total = roadmap_items | length %}
+            <div class="stat-ring">
+                <svg viewBox="0 0 36 36">
+                    <path class="stat-ring-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+                    <path class="stat-ring-fill" stroke-dasharray="{{ (done / total * 100) if total else 0 }}, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+                </svg>
+                <span class="stat-ring-text">{{ done }}/{{ total }}</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="problem-list">
+        {% for item in roadmap_items %}
+        <div class="problem-card {% if item.is_completed %}problem-card--done{% endif %}">
+            <div class="problem-card-left">
+                <form method="post" action="/interview/{{ interview.id }}/roadmap/{{ item.id }}/toggle" class="check-form">
+                    <button type="submit" class="check-btn {% if item.is_completed %}check-btn--checked{% endif %}" title="Toggle completed">
+                        {% if item.is_completed %}&#10003;{% endif %}
+                    </button>
+                </form>
+                <div class="problem-info">
+                    <a href="/interview/{{ interview.id }}/problem/{{ item.problem.id }}" class="problem-title">{{ item.problem.title }}</a>
+                    <div class="problem-meta">
+                        <span class="difficulty-tag difficulty-{{ item.problem.difficulty | lower }}">{{ item.problem.difficulty }}</span>
+                        {% if item.problem.topics %}
+                        <span class="topics-text">{{ item.problem.topics }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <a href="/interview/{{ interview.id }}/problem/{{ item.problem.id }}" class="problem-go" title="Open problem">&rarr;</a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

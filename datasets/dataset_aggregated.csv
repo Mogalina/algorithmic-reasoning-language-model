@@ -1,0 +1,934 @@
+company,days_until,easycount,hardcount,mediumcount
+AMD,360,3,0,5
+AQR Capital Management,360,1,0,1
+Accenture,90,1,0,0
+Accenture,180,6,1,3
+Accenture,360,54,2,44
+Accolite,30,0,0,1
+Accolite,90,1,0,1
+Accolite,180,1,0,1
+Accolite,360,6,1,8
+Acko,180,0,1,0
+Acko,360,2,1,0
+Activision,180,0,0,1
+Activision,360,1,0,0
+Adobe,90,1,1,5
+Adobe,180,3,3,9
+Adobe,360,25,15,60
+Affirm,90,0,0,2
+Affirm,180,0,1,4
+Affirm,360,1,2,7
+Agoda,30,1,0,0
+Agoda,90,2,0,2
+Agoda,180,4,0,3
+Agoda,360,11,2,21
+Airbnb,30,0,1,0
+Airbnb,90,0,3,2
+Airbnb,180,1,4,8
+Airbnb,360,10,17,28
+Airbus SE,360,2,0,2
+Airtel,180,0,0,1
+Airtel,360,1,0,4
+Airwallex,360,0,0,1
+Akamai,360,3,1,0
+Akuna Capital,90,0,1,0
+Akuna Capital,180,0,1,0
+Akuna Capital,360,3,9,10
+Alibaba,360,0,1,4
+Altimetrik,360,2,0,2
+Amadeus,360,2,0,2
+Amazon,30,19,16,65
+Amazon,90,25,16,59
+Amazon,180,22,16,62
+Amazon,360,19,19,62
+Amdocs,180,0,0,1
+Amdocs,360,1,1,3
+American Express,180,2,0,1
+American Express,360,6,4,10
+Analytics quotient,360,2,0,0
+Anduril,90,0,5,4
+Anduril,180,1,5,10
+Anduril,360,2,3,16
+Aon,360,2,1,1
+Apollo.io,360,0,1,3
+AppDynamics,360,1,0,1
+AppFolio,360,0,1,1
+Apple,30,3,3,8
+Apple,90,16,8,38
+Apple,180,26,13,60
+Apple,360,24,15,61
+Applied Intuition,30,0,1,0
+Applied Intuition,90,0,2,2
+Applied Intuition,180,0,2,2
+Applied Intuition,360,0,1,3
+Arcesium,360,0,6,13
+Arista Networks,90,0,0,1
+Arista Networks,180,1,0,3
+Arista Networks,360,10,2,18
+Asana,180,0,0,1
+Asana,360,1,0,2
+Atlassian,30,0,1,6
+Atlassian,90,1,3,10
+Atlassian,180,4,4,17
+Atlassian,360,10,13,36
+Attentive,90,0,1,1
+Attentive,180,1,1,1
+Attentive,360,1,2,2
+Audible,360,2,0,1
+Aurora,30,0,0,1
+Aurora,90,0,0,1
+Aurora,180,0,0,1
+Aurora,360,1,0,1
+Autodesk,90,0,0,1
+Autodesk,180,1,1,6
+Autodesk,360,5,6,8
+Avalara,360,0,2,0
+Avito,180,1,0,1
+Avito,360,3,0,4
+Axon,30,0,0,1
+Axon,90,1,0,3
+Axon,180,1,0,3
+Axon,360,0,0,3
+BILL Holdings,360,0,0,1
+BNY Mellon,180,0,0,1
+BNY Mellon,360,6,3,11
+BP,360,0,0,4
+Baidu,360,0,5,5
+Bank of America,180,1,0,0
+Bank of America,360,2,0,0
+Barclays,180,0,0,1
+Barclays,360,7,3,7
+Bentley Systems,360,1,0,1
+BharatPe,360,0,0,2
+BitGo,30,0,0,1
+BitGo,90,0,0,2
+BitGo,180,0,2,4
+BitGo,360,0,1,5
+BlackRock,90,1,0,0
+BlackRock,180,1,0,0
+BlackRock,360,4,1,12
+BlackStone,360,2,0,0
+Blizzard,360,1,0,1
+Block,360,1,4,9
+Bloomberg,30,13,2,18
+Bloomberg,90,33,7,60
+Bloomberg,180,34,6,60
+Bloomberg,360,22,15,63
+Bolt,180,1,0,0
+Bolt,360,5,1,1
+Booking.com,180,1,1,3
+Booking.com,360,3,3,6
+Bosch,360,1,0,1
+Box,30,1,0,0
+Box,90,1,1,1
+Box,180,1,1,1
+Box,360,2,1,2
+Braze,360,2,0,0
+Brex,360,0,1,1
+Bridgewater Associates,360,0,0,2
+ByteDance,90,0,0,5
+ByteDance,180,0,3,8
+ByteDance,360,8,5,39
+CARS24,360,1,0,7
+CEDCOSS,360,2,0,2
+CME Group,360,2,0,0
+CRED,30,1,0,0
+CRED,90,1,0,0
+CRED,180,1,0,0
+CVENT,360,1,0,0
+Cadence,180,1,0,0
+Cadence,360,2,1,1
+Canonical,360,2,0,1
+Capgemini,30,1,0,0
+Capgemini,90,2,0,0
+Capgemini,180,5,1,2
+Capgemini,360,9,1,4
+Capital One,30,0,1,4
+Capital One,90,0,3,12
+Capital One,180,4,4,13
+Capital One,360,5,9,21
+Careem,180,0,0,1
+Careem,360,1,0,1
+Cashfree,360,0,0,3
+Celigo,360,1,1,0
+Chewy,180,0,0,1
+Chewy,360,2,0,2
+Chime,360,0,0,2
+Circle,360,0,1,1
+Cisco,30,1,0,0
+Cisco,90,3,0,5
+Cisco,180,6,1,11
+Cisco,360,21,11,42
+Citadel,90,1,3,2
+Citadel,180,1,7,8
+Citadel,360,5,33,55
+Citigroup,360,2,0,0
+Citrix,360,1,1,4
+Clari,360,0,0,3
+Cleartrip,180,0,1,0
+Cleartrip,360,0,0,2
+Cloudera,360,3,0,2
+Cloudflare,30,0,1,0
+Cloudflare,90,0,1,2
+Cloudflare,180,0,1,5
+Cloudflare,360,1,0,8
+Cognizant,90,1,1,1
+Cognizant,180,4,1,3
+Cognizant,360,12,0,7
+Cohesity,360,0,1,2
+Coinbase,90,0,0,3
+Coinbase,180,0,0,3
+Coinbase,360,1,2,9
+Comcast,180,1,0,1
+Comcast,360,2,0,0
+Commvault,360,1,1,9
+Compass,90,0,0,1
+Compass,180,0,0,1
+Compass,360,2,0,2
+Confluent,30,0,1,3
+Confluent,90,0,1,4
+Confluent,180,0,1,5
+Confluent,360,0,6,4
+ConsultAdd,360,2,1,8
+Coupang,30,0,0,1
+Coupang,90,0,0,5
+Coupang,180,0,5,11
+Coupang,360,1,10,24
+Coursera,90,0,1,0
+Coursera,180,0,1,0
+Coursera,360,1,5,5
+Coveo,360,0,1,1
+Credit Karma,360,0,1,2
+Criteo,90,1,0,1
+Criteo,180,2,0,1
+Criteo,360,4,0,0
+CrowdStrike,90,0,0,1
+CrowdStrike,180,0,1,2
+CrowdStrike,360,2,0,6
+Cruise,180,0,0,1
+Cruise,360,0,1,4
+CureFit,360,0,0,3
+DE Shaw,30,0,0,1
+DE Shaw,90,0,1,1
+DE Shaw,180,1,3,4
+DE Shaw,360,9,32,59
+DP world,90,0,1,0
+DP world,180,0,2,0
+DP world,360,0,0,4
+DRW,90,0,0,1
+DRW,180,0,0,1
+DRW,360,2,1,5
+DXC Technology,360,2,0,1
+Darwinbox,360,0,2,3
+Databricks,30,0,0,1
+Databricks,90,0,0,7
+Databricks,180,1,0,7
+Databricks,360,1,8,24
+Datadog,90,1,0,2
+Datadog,180,3,1,5
+Datadog,360,8,3,6
+Dataminr,360,0,1,1
+Delhivery,360,0,1,2
+Deliveroo,360,1,2,2
+Dell,90,0,0,1
+Dell,180,0,0,1
+Dell,360,2,1,2
+Deloitte,90,0,0,2
+Deloitte,180,3,1,5
+Deloitte,360,10,1,3
+DeltaX,360,1,0,2
+Deutsche Bank,360,7,7,15
+DevRev,360,2,1,1
+Devsinc,360,2,0,0
+Devtron,360,1,1,0
+Directi,360,0,4,5
+Disney,180,0,0,1
+Disney,360,5,0,9
+Docusign,30,0,0,1
+Docusign,90,0,0,4
+Docusign,180,0,1,6
+Docusign,360,3,3,16
+DoorDash,30,0,6,5
+DoorDash,90,0,8,11
+DoorDash,180,3,15,23
+DoorDash,360,6,23,46
+Dream11,90,0,0,1
+Dream11,180,0,0,2
+Dream11,360,1,2,5
+Dropbox,90,0,1,1
+Dropbox,180,0,1,1
+Dropbox,360,2,8,13
+Druva,360,1,0,3
+Dunzo,360,0,4,3
+Duolingo,180,0,1,0
+Duolingo,360,0,1,2
+EPAM Systems,180,3,0,2
+EPAM Systems,360,14,1,20
+EY,360,2,0,1
+EarnIn,180,0,0,1
+Edelweiss Group,360,0,0,1
+Electronic Arts,360,2,0,1
+Epic Systems,180,0,0,3
+Epic Systems,360,3,0,8
+Expedia,180,1,0,1
+Expedia,360,8,4,30
+FPT,360,2,0,1
+FactSet,360,1,0,4
+Faire,90,0,0,1
+Faire,180,0,0,1
+Faire,360,0,0,2
+Fastenal,360,0,3,1
+Fidelity,360,3,0,0
+Fiverr,360,0,0,2
+Flexera,360,1,0,1
+Flexport,90,0,0,2
+Flexport,180,0,0,5
+Flexport,360,0,0,8
+Flipkart,30,0,0,1
+Flipkart,90,0,0,3
+Flipkart,180,1,0,10
+Flipkart,360,10,32,58
+Fortinet,90,0,0,1
+Fortinet,180,0,0,1
+Fortinet,360,1,1,0
+Freecharge,180,0,0,1
+Freecharge,360,0,0,2
+FreshWorks,360,4,0,4
+GE Digital,360,1,0,2
+GE Healthcare,360,2,2,3
+GSA Capital,360,0,0,2
+GSN Games,360,2,1,2
+Gameskraft,360,0,4,0
+Garmin,90,1,0,0
+Garmin,180,1,0,0
+Garmin,360,4,0,0
+Geico,90,0,0,1
+Geico,180,0,0,3
+Geico,360,1,2,14
+General Motors,30,0,0,1
+General Motors,90,0,0,1
+General Motors,180,0,0,2
+General Motors,360,0,1,3
+Genpact,360,1,0,2
+GoDaddy,360,1,0,3
+Gojek,360,0,1,4
+Goldman Sachs,30,3,2,7
+Goldman Sachs,90,7,6,21
+Goldman Sachs,180,20,11,48
+Goldman Sachs,360,25,12,63
+Google,30,29,21,50
+Google,90,34,17,49
+Google,180,26,18,56
+Google,360,27,18,55
+Grab,90,0,0,1
+Grab,180,0,0,2
+Grab,360,1,0,8
+Grammarly,30,0,0,2
+Grammarly,90,1,0,7
+Grammarly,180,4,1,10
+Grammarly,360,7,2,13
+Graviton,360,0,2,5
+Groupon,360,0,0,4
+Groww,360,1,1,3
+Grubhub,360,0,0,2
+Guidewire,30,0,0,1
+Guidewire,90,0,0,1
+Guidewire,180,0,0,2
+Guidewire,360,0,0,3
+Gusto,90,0,0,1
+Gusto,180,0,1,1
+Gusto,360,0,1,2
+HCL,180,1,0,1
+HCL,360,3,0,1
+HP,360,2,0,1
+HPE,360,1,0,3
+HSBC,90,1,0,0
+HSBC,180,1,0,0
+Harness,360,0,0,1
+HashedIn,90,0,0,1
+HashedIn,180,0,2,4
+HashedIn,360,2,3,6
+Hertz,360,0,0,2
+HiLabs,360,1,2,0
+Highspot,360,0,0,2
+Hive,360,0,1,1
+Hiver,360,0,1,1
+Honeywell,360,1,0,2
+Hotstar,360,0,1,1
+Houzz,360,0,2,0
+Huawei,360,3,2,9
+Hubspot,30,1,0,1
+Hubspot,90,1,0,2
+Hubspot,180,3,0,4
+Hubspot,360,3,1,4
+Hudson River Trading,360,4,3,1
+Hulu,360,0,3,2
+IBM,30,0,0,1
+IBM,90,0,0,4
+IBM,180,10,0,16
+IBM,360,26,7,67
+IIT Bombay,360,1,0,1
+IMC,360,0,2,5
+INDmoney,360,0,0,2
+IVP,360,0,1,1
+IXL,90,0,0,1
+IXL,180,1,0,3
+IXL,360,3,3,10
+InMobi,360,0,3,3
+Indeed,360,2,2,3
+Info Edge,180,1,1,2
+Info Edge,360,0,0,3
+Informatica,360,0,0,2
+Infosys,30,1,1,0
+Infosys,90,2,1,0
+Infosys,180,6,2,9
+Infosys,360,25,13,49
+Instacart,30,0,0,1
+Instacart,90,1,0,2
+Instacart,180,1,0,3
+Instacart,360,4,3,7
+Intel,180,2,0,1
+Intel,360,7,1,10
+Intuit,90,1,0,1
+Intuit,180,3,2,3
+Intuit,360,10,12,40
+J.P. Morgan,30,0,0,1
+J.P. Morgan,90,2,0,7
+J.P. Morgan,180,4,0,9
+J.P. Morgan,360,23,5,35
+Jane Street,360,3,3,2
+Jump Trading,180,1,1,0
+Jump Trading,360,2,2,0
+Juniper Networks,360,0,0,3
+Juspay,90,0,3,1
+Juspay,180,0,3,2
+Juspay,360,0,1,5
+KLA,30,0,0,1
+KLA,180,0,1,2
+KLA,360,2,2,1
+Kakao,360,0,1,1
+Karat,30,2,0,2
+Karat,90,2,1,2
+Karat,180,2,1,3
+Karat,360,3,2,7
+Komprise,360,1,1,0
+LINE,90,0,1,0
+LINE,180,0,1,0
+LINE,360,0,3,0
+LTI,360,0,1,3
+Larsen & Toubro,360,2,0,0
+Lenskart,360,0,0,2
+Licious,360,0,1,1
+Liftoff,90,0,1,2
+Liftoff,180,0,1,2
+Liftoff,360,0,0,2
+LinkedIn,30,0,5,5
+LinkedIn,90,4,12,36
+LinkedIn,180,11,18,58
+LinkedIn,360,21,14,65
+LiveRamp,360,2,0,4
+Lowe's,360,2,2,0
+Lucid,360,2,1,4
+Luxoft,90,1,0,0
+Luxoft,180,1,0,0
+Luxoft,360,1,0,0
+Lyft,30,0,1,2
+Lyft,90,0,4,4
+Lyft,180,0,4,7
+Lyft,360,0,7,15
+MAQ Software,360,0,2,3
+MSCI,360,0,0,1
+MakeMyTrip,360,1,6,15
+Mapbox,360,0,0,1
+Mastercard,90,1,0,0
+Mastercard,180,2,0,0
+MathWorks,90,0,1,2
+MathWorks,180,1,3,3
+MathWorks,360,4,10,8
+McKinsey,360,0,1,3
+Media.net,360,7,15,17
+Meesho,90,0,0,3
+Meesho,180,0,2,3
+Meesho,360,1,9,12
+Mercari,360,3,0,2
+Meta,30,21,16,63
+Meta,90,26,13,61
+Meta,180,22,13,65
+Meta,360,26,15,59
+Microsoft,30,13,10,24
+Microsoft,90,34,11,55
+Microsoft,180,25,16,59
+Microsoft,360,22,15,63
+Microstrategy,180,1,0,0
+Microstrategy,360,1,0,2
+Millennium,180,1,0,0
+Millennium,360,1,1,4
+MindTree,360,2,0,0
+Mindtickle,360,0,3,1
+Miro,360,0,0,3
+Mitsogo,360,4,2,10
+Mixpanel,90,0,0,1
+Mixpanel,180,0,0,1
+Mixpanel,360,0,0,1
+Mobileye,360,0,0,2
+Moengage,360,1,0,1
+Moloco,180,0,0,1
+Moloco,360,0,1,4
+MongoDB,90,1,0,2
+MongoDB,180,1,0,3
+MongoDB,360,1,3,8
+Morgan Stanley,90,0,0,2
+Morgan Stanley,180,1,1,4
+Morgan Stanley,360,10,6,20
+Mountblue,360,0,0,2
+Moveworks,90,0,0,2
+Moveworks,180,0,0,3
+Moveworks,360,0,2,3
+Myntra,90,0,0,2
+Myntra,180,0,0,4
+Myntra,360,3,3,11
+NCR,360,0,0,1
+Nagarro,360,2,1,3
+National Instruments,360,0,1,3
+National Payments Corporation of India,360,1,0,1
+Navan,90,0,1,0
+Navan,180,0,1,0
+Navan,360,0,1,2
+Navi,360,0,0,3
+NetApp,180,1,0,0
+NetApp,360,1,1,4
+NetEase,360,0,1,1
+Netflix,90,3,1,2
+Netflix,180,3,2,8
+Netflix,360,8,3,17
+Netskope,90,0,0,1
+Netskope,180,0,0,1
+Netskope,360,0,0,2
+Netsuite,360,2,0,0
+Nextdoor,90,0,1,0
+Nextdoor,180,0,1,1
+Nextdoor,360,0,1,6
+Niantic,360,0,0,5
+Nielsen,360,0,1,4
+Nike,180,0,0,1
+Nike,360,3,1,5
+NinjaCart,360,0,0,1
+Nokia,360,1,1,0
+Nordstrom,90,0,0,1
+Nordstrom,180,0,0,1
+Nordstrom,360,1,1,6
+Notion,360,0,1,2
+Nuro,90,0,1,1
+Nuro,180,0,1,1
+Nuro,360,0,2,2
+Nutanix,90,0,1,5
+Nutanix,180,0,4,12
+Nutanix,360,3,6,29
+Nvidia,30,0,0,2
+Nvidia,90,0,0,7
+Nvidia,180,6,1,21
+Nvidia,360,27,12,61
+Nykaa,180,0,0,1
+Nykaa,360,0,1,2
+OKX,360,0,1,2
+Odoo,360,1,0,2
+Okta,360,0,1,4
+Ola Cabs,360,1,0,1
+OpenAI,90,0,0,2
+OpenAI,180,0,0,5
+OpenAI,360,1,1,5
+Opendoor,360,0,1,0
+Optiver,360,2,0,1
+Optum,360,1,0,3
+Oracle,30,0,1,7
+Oracle,90,6,6,28
+Oracle,180,18,14,57
+Oracle,360,28,13,59
+Otter.ai,360,0,2,2
+Ozon,180,1,0,1
+Ozon,360,8,1,1
+Palantir Technologies,90,0,0,2
+Palantir Technologies,180,0,0,4
+Palantir Technologies,360,7,6,13
+Palo Alto Networks,30,0,0,2
+Palo Alto Networks,90,0,2,4
+Palo Alto Networks,180,0,3,4
+Palo Alto Networks,360,5,1,12
+Patreon,180,0,0,1
+Patreon,360,1,1,1
+PayPal,30,0,0,1
+PayPal,90,1,0,9
+PayPal,180,3,3,24
+PayPal,360,16,14,56
+PayPay,90,0,1,0
+PayPay,180,0,1,1
+PayPay,360,1,0,0
+PayU,360,1,0,1
+Paycom,360,2,0,1
+Paytm,180,0,0,1
+Paytm,360,6,1,20
+Peloton,360,0,1,2
+PhonePe,180,0,4,9
+PhonePe,360,2,26,42
+Pinterest,30,0,5,0
+Pinterest,90,0,9,4
+Pinterest,180,0,10,4
+Pinterest,360,1,16,25
+Pocket Gems,360,1,4,10
+Point72,360,3,0,4
+Pony.ai,360,0,1,3
+PornHub,360,2,2,3
+Poshmark,360,0,1,2
+Postmates,360,1,0,2
+PubMatic,360,1,1,1
+Publicis Sapient,180,0,0,1
+Publicis Sapient,360,2,1,1
+Pure Storage,30,1,0,0
+Pure Storage,90,1,0,0
+Pure Storage,360,1,1,3
+Pwc,180,2,0,0
+Pwc,360,3,0,1
+QBurst,360,1,1,1
+Qualcomm,90,3,1,2
+Qualcomm,180,6,1,7
+Qualcomm,360,11,4,12
+Qualtrics,180,0,0,1
+Qualtrics,360,1,0,2
+Quora,360,6,2,9
+RBC,180,0,0,1
+RBC,360,2,0,2
+Rakuten,360,1,0,2
+Reddit,180,1,0,0
+Reddit,360,1,1,4
+Remitly,90,1,0,2
+Remitly,180,1,0,2
+Remitly,360,1,1,1
+Revolut,90,1,0,1
+Revolut,180,2,0,2
+Revolut,360,3,0,6
+Riot Games,180,0,0,1
+Riot Games,360,1,1,1
+Ripple,90,0,0,1
+Ripple,180,0,1,2
+Ripple,360,1,0,8
+Rippling,90,0,1,0
+Rippling,180,0,1,1
+Rippling,360,1,4,6
+Rivian,30,1,0,0
+Rivian,90,1,0,0
+Rivian,180,1,1,1
+Rivian,360,0,0,4
+Robinhood,90,0,0,3
+Robinhood,180,1,0,4
+Robinhood,360,2,1,7
+Roblox,90,0,1,3
+Roblox,180,1,1,7
+Roblox,360,6,11,26
+Roche,360,2,0,0
+Rokt,180,0,1,0
+Rokt,360,2,0,1
+Roku,180,1,1,0
+Roku,360,2,2,5
+Rubrik,90,0,1,2
+Rubrik,180,0,3,5
+Rubrik,360,2,9,17
+SAP,180,0,0,1
+SAP,360,14,6,15
+SIG,90,0,0,1
+SIG,180,0,1,1
+SIG,360,1,1,2
+SOTI,360,1,1,1
+Salesforce,30,0,2,5
+Salesforce,90,2,2,10
+Salesforce,180,5,11,25
+Salesforce,360,14,23,63
+Samsara,180,0,0,1
+Samsara,360,1,2,3
+Samsung,30,0,0,1
+Samsung,90,1,1,4
+Samsung,180,1,2,5
+Samsung,360,13,17,35
+Scale AI,360,0,0,2
+Sentry,360,0,1,1
+ServiceNow,90,0,2,3
+ServiceNow,180,0,2,8
+ServiceNow,360,9,10,51
+ShareChat,360,1,0,1
+Shopee,180,0,0,1
+Shopee,360,3,0,4
+Shopify,30,0,0,1
+Shopify,90,0,0,2
+Shopify,180,0,0,3
+Shopify,360,1,2,4
+Siemens,90,0,1,1
+Siemens,180,1,1,3
+Siemens,360,10,3,8
+Sigmoid,30,0,0,1
+Sigmoid,90,0,0,1
+Sigmoid,180,0,0,1
+Sigmoid,360,0,1,3
+Slice,360,2,0,0
+Smartsheet,360,0,0,4
+Snap,30,0,0,1
+Snap,90,0,9,9
+Snap,180,0,10,11
+Snap,360,7,27,62
+Snapdeal,360,1,0,1
+Snowflake,30,2,0,4
+Snowflake,90,4,7,12
+Snowflake,180,5,11,22
+Snowflake,360,6,22,32
+SoFi,30,0,1,0
+SoFi,90,0,2,0
+SoFi,180,0,3,2
+SoFi,360,3,1,9
+Societe Generale,360,1,0,1
+Softwire,180,0,0,1
+Softwire,360,1,0,1
+Sony,180,0,0,1
+Sony,360,1,2,0
+SoundHound,360,1,0,1
+Splunk,180,0,0,3
+Splunk,360,0,2,8
+Spotify,30,1,0,0
+Spotify,90,3,0,1
+Spotify,180,3,0,1
+Spotify,360,5,3,3
+Sprinklr,180,0,1,0
+Sprinklr,360,1,17,21
+Squarepoint Capital,90,0,1,0
+Squarepoint Capital,180,0,1,1
+Squarepoint Capital,360,1,2,6
+Squarespace,30,1,0,0
+Squarespace,90,1,0,1
+Squarespace,180,1,0,1
+Squarespace,360,1,0,1
+StackAdapt,360,0,1,3
+Stackline,180,0,1,1
+Stackline,360,0,0,1
+Stripe,360,0,1,4
+Sumo Logic,360,1,1,2
+Swiggy,90,0,0,2
+Swiggy,180,3,0,8
+Swiggy,360,5,3,7
+Synopsys,360,0,0,2
+Tanium,180,0,0,1
+Tanium,360,0,0,1
+Target,360,0,1,2
+Tech Mahindra,360,2,0,1
+Tejas Networks,360,1,0,1
+Tekion,90,0,2,3
+Tekion,180,1,3,4
+Tekion,360,2,1,3
+Tencent,90,0,0,1
+Tencent,180,0,0,1
+Tencent,360,2,3,9
+Teradata,360,0,1,1
+Tesco,180,0,0,1
+Tesco,360,0,0,2
+Tesla,90,0,1,3
+Tesla,180,0,1,6
+Tesla,360,13,2,21
+Texas Instruments,360,1,1,2
+The Trade Desk,180,0,1,0
+The Trade Desk,360,1,0,3
+Thomson Reuters,360,2,0,1
+ThoughtWorks,360,3,3,2
+ThousandEyes,360,0,1,3
+Tiger Analytics,90,1,0,0
+Tiger Analytics,180,1,0,0
+Tiger Analytics,360,2,0,2
+TikTok,30,1,2,11
+TikTok,90,4,13,36
+TikTok,180,8,29,63
+TikTok,360,13,16,71
+Tinder,360,1,1,0
+Tinkoff,180,1,0,0
+Tinkoff,360,9,0,21
+Toast,180,0,0,1
+Toast,360,2,0,1
+Toptal,360,1,1,1
+Tower Research Capital,360,0,1,1
+Trexquant,360,0,0,3
+Trilogy,360,0,3,2
+Tripadvisor,180,1,0,0
+Tripadvisor,360,3,0,1
+TuSimple,360,0,2,2
+Turing,90,0,0,3
+Turing,180,0,1,8
+Turing,360,10,1,20
+Turo,360,1,0,4
+Turvo,360,1,2,0
+Twilio,360,2,2,6
+Twitch,90,0,1,0
+Twitch,180,0,1,0
+Twitch,360,1,0,4
+Two Sigma,180,0,2,0
+Two Sigma,360,4,6,12
+UBS,180,0,0,1
+UBS,360,1,0,3
+UKG,30,0,1,0
+UKG,90,0,1,2
+UKG,180,1,1,3
+UKG,360,2,2,4
+USAA,360,1,0,0
+Uber,30,1,3,4
+Uber,90,1,16,32
+Uber,180,2,29,56
+Uber,360,23,18,59
+UiPath,90,0,0,2
+UiPath,180,0,1,2
+UiPath,360,0,1,4
+Unity,360,0,0,4
+Upstart,30,0,0,1
+Upstart,90,0,0,1
+Upstart,180,0,0,2
+Upstart,360,0,0,3
+Urban Company,360,0,1,3
+VK,90,0,0,1
+VK,180,1,0,2
+VK,360,3,0,1
+VMware,360,4,3,9
+Valve,180,0,0,1
+Valve,360,1,0,2
+Vanguard,360,2,0,0
+Veeva Systems,360,0,0,4
+Verily,180,0,0,1
+Verily,360,1,1,9
+Veritas,360,1,0,1
+Verkada,30,0,1,1
+Verkada,90,0,1,1
+Verkada,180,1,1,1
+Verkada,360,3,4,7
+Vimeo,90,0,0,1
+Vimeo,180,0,0,1
+Vimeo,360,0,1,1
+Virtu Financial,90,1,0,0
+Virtu Financial,180,2,0,0
+Virtu Financial,360,4,0,1
+Virtusa,360,2,0,2
+Visa,30,0,0,2
+Visa,90,4,3,13
+Visa,180,8,6,18
+Visa,360,14,11,24
+Walmart Labs,30,0,1,0
+Walmart Labs,90,3,1,14
+Walmart Labs,180,3,2,26
+Walmart Labs,360,19,13,68
+Warnermedia,90,1,0,0
+Warnermedia,180,1,0,1
+Warnermedia,360,2,2,4
+WatchGuard,360,0,0,1
+Wayfair,180,1,0,1
+Wayfair,360,5,2,15
+Waymo,90,0,1,2
+Waymo,180,0,2,4
+Waymo,360,0,0,3
+WeRide,90,0,2,0
+WeRide,180,0,3,1
+WeRide,360,0,3,0
+Wealthfront,360,0,0,1
+Wells Fargo,180,1,0,0
+Wells Fargo,360,3,1,10
+Western Digital,180,1,0,0
+Western Digital,360,1,0,0
+Whatnot,90,1,0,0
+Whatnot,180,2,0,0
+Whatnot,360,1,0,2
+WinZO,360,0,3,1
+Wipro,90,1,0,0
+Wipro,180,2,0,0
+Wipro,360,11,1,9
+Wise,360,2,0,3
+Wish,360,0,1,3
+Wissen Technology,30,0,0,1
+Wissen Technology,90,0,0,1
+Wissen Technology,180,0,0,1
+Wissen Technology,360,2,0,0
+Wix,30,0,2,1
+Wix,90,0,2,1
+Wix,180,1,2,5
+Wix,360,15,7,27
+Workday,90,0,0,1
+Workday,180,0,0,1
+Workday,360,1,2,3
+Works Applications,360,0,2,2
+WorldQuant,30,0,0,1
+WorldQuant,90,0,0,1
+WorldQuant,180,0,0,1
+WorldQuant,360,0,3,0
+X,360,8,12,29
+Yahoo,90,0,0,2
+Yahoo,180,0,0,3
+Yahoo,360,27,11,62
+Yandex,30,4,0,7
+Yandex,90,9,1,23
+Yandex,180,11,4,34
+Yandex,360,31,7,62
+Yelp,90,0,0,1
+Yelp,180,0,0,1
+Yelp,360,8,5,15
+Yext,360,1,1,1
+ZS Associates,90,0,0,1
+ZS Associates,180,0,0,1
+ZS Associates,360,4,0,3
+ZScaler,90,0,1,1
+ZScaler,180,0,1,2
+ZScaler,360,9,2,6
+Zalando,360,1,0,4
+Zendesk,360,2,0,1
+Zenefits,360,5,5,11
+Zepto,180,0,1,1
+Zepto,360,1,4,22
+Zeta,90,0,1,0
+Zeta,180,0,2,2
+Zeta,360,0,5,10
+Zillow,360,1,0,2
+ZipRecruiter,360,0,1,3
+Zluri,360,0,0,2
+Zoho,30,0,1,5
+Zoho,90,4,4,10
+Zoho,180,8,5,24
+Zoho,360,34,9,57
+Zomato,90,0,0,2
+Zomato,180,0,0,2
+Zomato,360,0,11,10
+Zoom,360,2,0,1
+Zoox,90,0,0,1
+Zoox,180,1,0,2
+Zoox,360,1,0,3
+Zopsmart,90,0,1,2
+Zopsmart,180,0,1,3
+Zopsmart,360,1,2,10
+Zynga,360,0,1,1
+athenahealth,90,0,0,1
+athenahealth,180,0,0,1
+athenahealth,360,4,1,3
+blinkit,360,0,0,2
+carwale,180,0,0,1
+carwale,360,1,1,2
+ciena,360,0,0,2
+eBay,90,0,0,5
+eBay,180,0,0,9
+eBay,360,13,10,37
+fourkites,360,1,0,2
+instabase,360,0,1,0
+jio,360,1,4,2
+josh technology,90,0,0,1
+josh technology,180,0,0,3
+josh technology,360,3,1,13
+opentext,360,2,0,1
+oyo,90,0,0,2
+oyo,180,0,0,3
+oyo,360,0,3,3
+persistent systems,180,1,0,2
+persistent systems,360,4,0,1
+razorpay,180,0,0,2
+razorpay,360,1,1,6
+smartnews,360,0,0,5
+tcs,30,1,0,2
+tcs,90,4,1,7
+tcs,180,19,4,13
+tcs,360,53,6,41
+thoughtspot,360,0,4,8
+zeta suite,360,2,0,1

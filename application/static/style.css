@@ -1,0 +1,883 @@
+/* ============================================================
+   RESET & BASE
+   ============================================================ */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f5f5f5;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* ============================================================
+   NAVIGATION
+   ============================================================ */
+
+nav {
+    background-color: #fff;
+    border-bottom: 1px solid #ddd;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+nav .logo {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #222;
+    text-decoration: none;
+}
+
+nav .nav-links a {
+    text-decoration: none;
+    color: #555;
+    margin-left: 1.5rem;
+    font-size: 0.95rem;
+    transition: color 0.2s;
+}
+
+nav .nav-links a:hover {
+    color: #111;
+}
+
+/* ============================================================
+   HERO (HOME)
+   ============================================================ */
+
+.hero {
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.hero h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #111;
+    margin-bottom: 1rem;
+}
+
+.hero p {
+    font-size: 1.1rem;
+    color: #666;
+    margin-bottom: 2rem;
+}
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+
+.btn {
+    display: inline-block;
+    padding: 0.75rem 1.75rem;
+    background-color: #222;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn:hover {
+    background-color: #444;
+}
+
+.btn-outline {
+    background-color: transparent;
+    color: #222;
+    border: 1px solid #222;
+    margin-left: 0.75rem;
+}
+
+.btn-outline:hover {
+    background-color: #222;
+    color: #fff;
+}
+
+.btn-sm {
+    padding: 0.4rem 1rem;
+    font-size: 0.82rem;
+    border-radius: 5px;
+}
+
+/* ============================================================
+   AUTH (LOGIN / REGISTER)
+   ============================================================ */
+
+.auth-container {
+    max-width: 420px;
+    margin: 5rem auto;
+    background: #fff;
+    padding: 2.5rem;
+    border-radius: 10px;
+    border: 1px solid #e0e0e0;
+}
+
+.auth-container h2 {
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+    color: #111;
+}
+
+.form-group {
+    margin-bottom: 1.25rem;
+}
+
+.company_id {
+    margin-right: 100px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.9rem;
+    color: #444;
+    margin-bottom: 0.4rem;
+    font-weight: 500;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 0.7rem 0.9rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.form-group input:focus {
+    border-color: #888;
+}
+
+.error-msg {
+    color: #c0392b;
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
+}
+
+.auth-container .btn {
+    width: 100%;
+    text-align: center;
+}
+
+.auth-container p {
+    text-align: center;
+    margin-top: 1.25rem;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.auth-container p a {
+    color: #222;
+    font-weight: 500;
+}
+
+/* ============================================================
+   DASHBOARD
+   ============================================================ */
+
+.dashboard-container {
+    max-width: 960px;
+    margin: 2.5rem auto;
+    padding: 0 2rem;
+}
+
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.dashboard-header h1 {
+    font-size: 1.75rem;
+    color: #111;
+}
+
+.card {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.card h3 {
+    margin-bottom: 1.25rem;
+    font-size: 1.15rem;
+    color: #222;
+}
+
+.inline-form {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-end;
+    flex-wrap: wrap;
+}
+
+.inline-form .form-group {
+    margin-bottom: 0;
+    flex: 1;
+    min-width: 160px;
+}
+
+.inline-form select {
+    width: 100%;
+    padding: 0.7rem 0.9rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    outline: none;
+    background: #fff;
+}
+
+.inline-form .btn {
+    height: fit-content;
+    white-space: nowrap;
+}
+
+/* ============================================================
+   TABLES
+   ============================================================ */
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table th,
+table td {
+    text-align: left;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #eee;
+    font-size: 0.95rem;
+}
+
+table th {
+    color: #888;
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+table td {
+    color: #333;
+}
+
+/* ============================================================
+   BADGES
+   ============================================================ */
+
+.badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    background-color: #eee;
+    color: #555;
+}
+
+.badge-urgent {
+    background: #fdecea;
+    color: #c0392b;
+}
+
+.badge-soon {
+    background: #fef9e7;
+    color: #b7950b;
+}
+
+.badge-ok {
+    background: #eafaf1;
+    color: #1e8449;
+}
+
+/* ============================================================
+   PROGRESS BAR (DASHBOARD)
+   ============================================================ */
+
+.progress-bar-container {
+    width: 100%;
+    max-width: 120px;
+    height: 6px;
+    background: #eee;
+    border-radius: 3px;
+    overflow: hidden;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.progress-bar {
+    height: 100%;
+    background: #222;
+    border-radius: 3px;
+    transition: width 0.3s ease;
+}
+
+.progress-text {
+    font-size: 0.82rem;
+    color: #888;
+    margin-left: 0.5rem;
+    vertical-align: middle;
+}
+
+/* ============================================================
+   SHARED
+   ============================================================ */
+
+.back-link {
+    display: inline-block;
+    text-decoration: none;
+    color: #888;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+    transition: color 0.2s;
+}
+
+.back-link:hover {
+    color: #222;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 2rem;
+    color: #999;
+    font-size: 0.95rem;
+}
+
+.empty-state code {
+    background: #f0f0f0;
+    padding: 0.15rem 0.4rem;
+    border-radius: 4px;
+    font-size: 0.85rem;
+}
+
+/* ============================================================
+   DIFFICULTY TAGS
+   ============================================================ */
+
+.difficulty-tag {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.difficulty-easy {
+    background: #eafaf1;
+    color: #1e8449;
+}
+
+.difficulty-medium {
+    background: #fef9e7;
+    color: #b7950b;
+}
+
+.difficulty-hard {
+    background: #fdecea;
+    color: #c0392b;
+}
+
+/* ============================================================
+   ROADMAP PAGE
+   ============================================================ */
+
+.roadmap-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 0 2rem;
+}
+
+.roadmap-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.roadmap-header h1 {
+    font-size: 1.75rem;
+    color: #111;
+}
+
+.roadmap-subtitle {
+    color: #888;
+    font-size: 0.95rem;
+    margin-top: 0.25rem;
+}
+
+/* Circular progress ring */
+
+.roadmap-stats {
+    text-align: center;
+}
+
+.stat-ring {
+    position: relative;
+    width: 64px;
+    height: 64px;
+}
+
+.stat-ring svg {
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+}
+
+.stat-ring-bg {
+    fill: none;
+    stroke: #eee;
+    stroke-width: 3;
+}
+
+.stat-ring-fill {
+    fill: none;
+    stroke: #222;
+    stroke-width: 3;
+    stroke-linecap: round;
+    transition: stroke-dasharray 0.4s ease;
+}
+
+.stat-ring-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #333;
+}
+
+/* Problem cards */
+
+.problem-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.problem-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 1rem 1.25rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.problem-card:hover {
+    border-color: #ccc;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.problem-card--done {
+    opacity: 0.55;
+}
+
+.problem-card-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex: 1;
+    min-width: 0;
+}
+
+.check-form {
+    flex-shrink: 0;
+}
+
+.check-btn {
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
+    border: 2px solid #ccc;
+    background: #fff;
+    cursor: pointer;
+    font-size: 0.85rem;
+    line-height: 20px;
+    text-align: center;
+    color: transparent;
+    transition: all 0.15s;
+}
+
+.check-btn:hover {
+    border-color: #888;
+}
+
+.check-btn--checked {
+    background: #222;
+    border-color: #222;
+    color: #fff;
+}
+
+.problem-info {
+    min-width: 0;
+}
+
+.problem-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #222;
+    text-decoration: none;
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.problem-title:hover {
+    color: #555;
+}
+
+.problem-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: 0.3rem;
+    flex-wrap: wrap;
+}
+
+.topics-text {
+    font-size: 0.8rem;
+    color: #999;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 360px;
+}
+
+.problem-go {
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    background: #f5f5f5;
+    color: #888;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: all 0.15s;
+}
+
+.problem-go:hover {
+    background: #222;
+    color: #fff;
+}
+
+/* ============================================================
+   PROBLEM DETAIL PAGE (SPLIT LAYOUT)
+   ============================================================ */
+
+.problem-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    height: calc(100vh - 57px);
+    overflow: hidden;
+}
+
+.problem-panel {
+    padding: 2rem 2.5rem;
+    overflow-y: auto;
+    border-right: 1px solid #e0e0e0;
+}
+
+.problem-panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+}
+
+.problem-detail-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #111;
+    margin-bottom: 0.75rem;
+}
+
+.problem-topics-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 1.5rem;
+}
+
+.topic-chip {
+    display: inline-block;
+    padding: 0.2rem 0.55rem;
+    background: #f0f0f0;
+    border-radius: 4px;
+    font-size: 0.78rem;
+    color: #555;
+    font-weight: 500;
+}
+
+.problem-description {
+    font-size: 0.95rem;
+    line-height: 1.75;
+    color: #333;
+}
+
+.problem-description strong {
+    font-weight: 600;
+}
+
+.problem-description code {
+    background: #f0f0f0;
+    padding: 0.1rem 0.35rem;
+    border-radius: 4px;
+    font-size: 0.88rem;
+}
+
+.problem-description pre {
+    background: #f8f8f8;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    padding: 0.75rem 1rem;
+    overflow-x: auto;
+    font-size: 0.88rem;
+    margin: 0.75rem 0;
+}
+
+.problem-actions {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #eee;
+}
+
+/* ============================================================
+   TUTOR CHAT PANEL
+   ============================================================ */
+
+.tutor-panel {
+    display: flex;
+    flex-direction: column;
+    background: #fafafa;
+    height: 100%;
+}
+
+.tutor-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid #e0e0e0;
+    background: #fff;
+}
+
+.tutor-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: #222;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.95rem;
+    flex-shrink: 0;
+}
+
+.tutor-header strong {
+    display: block;
+    font-size: 0.95rem;
+    color: #222;
+}
+
+.tutor-status {
+    display: block;
+    font-size: 0.78rem;
+    color: #999;
+}
+
+.tutor-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.tutor-msg {
+    max-width: 90%;
+    padding: 0.75rem 1rem;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    line-height: 1.55;
+}
+
+.tutor-msg p {
+    margin-bottom: 0.4rem;
+}
+
+.tutor-msg p:last-child {
+    margin-bottom: 0;
+}
+
+.tutor-msg--assistant {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    align-self: flex-start;
+    color: #333;
+}
+
+.tutor-msg--user {
+    background: #222;
+    color: #fff;
+    align-self: flex-end;
+    border-radius: 10px 10px 2px 10px;
+}
+
+.tutor-input-form {
+    display: flex;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    border-top: 1px solid #e0e0e0;
+    background: #fff;
+}
+
+.tutor-input-form input {
+    flex: 1;
+    padding: 0.65rem 0.9rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    outline: none;
+    font-family: inherit;
+}
+
+.tutor-input-form input:focus {
+    border-color: #888;
+}
+
+.tutor-send-btn {
+    width: 38px;
+    height: 38px;
+    border: none;
+    border-radius: 8px;
+    background: #222;
+    color: #fff;
+    font-size: 1.1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.15s;
+    flex-shrink: 0;
+}
+
+.tutor-send-btn:hover {
+    background: #444;
+}
+
+.tutor-send-btn:disabled {
+    cursor: not-allowed;
+}
+
+.tutor-thinking {
+    color: #999;
+    font-style: italic;
+}
+
+@keyframes tutor-pulse {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+}
+
+.tutor-thinking {
+    animation: tutor-pulse 1.2s ease-in-out infinite;
+}
+
+.tutor-error {
+    color: #c0392b;
+}
+
+.tutor-msg code {
+    background: #f0f0f0;
+    padding: 0.1rem 0.35rem;
+    border-radius: 4px;
+    font-size: 0.85rem;
+}
+
+.tutor-msg pre {
+    background: #f0f0f0;
+    border-radius: 6px;
+    padding: 0.6rem 0.8rem;
+    overflow-x: auto;
+    margin: 0.5rem 0;
+    font-size: 0.83rem;
+}
+
+.tutor-msg pre code {
+    background: none;
+    padding: 0;
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+
+footer {
+    text-align: center;
+    padding: 2rem;
+    color: #aaa;
+    font-size: 0.85rem;
+    margin-top: 3rem;
+}
+
+/* Hide footer on problem detail page (full height layout) */
+.problem-layout ~ footer {
+    display: none;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 768px) {
+    .problem-layout {
+        grid-template-columns: 1fr;
+        height: auto;
+        overflow: visible;
+    }
+
+    .problem-panel {
+        border-right: none;
+        border-bottom: 1px solid #e0e0e0;
+    }
+
+    .tutor-panel {
+        height: 50vh;
+    }
+
+    .roadmap-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .topics-text {
+        max-width: 200px;
+    }
+}

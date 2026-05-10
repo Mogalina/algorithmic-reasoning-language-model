@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block title %}Dashboard - InterviewPrep{% endblock %}
+{% block nav %}
+<a href="/dashboard">Dashboard</a>
+<a href="/logout">Logout</a>
+{% endblock %}
+{% block content %}
+<div class="dashboard-container">
+    <div class="dashboard-header">
+        <h1>Dashboard</h1>
+        <span style="color:#666;">{{ user.email }}</span>
+    </div>
+
+    <div class="card">
+        <h3>Schedule an Interview</h3>
+        <form method="post" action="/dashboard/add" class="inline-form">
+            <div class="form-group">
+                <label for="company_id">Company</label>
+                <select name="company_id" id="company_id" class="company_id" required>
+                    {% for company in companies %}
+                    <option value="{{ company.id }}">{{ company.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="days_until">Days Until Interview</label>
+                <input type="number" id="days_until" name="days_until" min="1" max="365" required placeholder="e.g. 14">
+            </div>
+            <button type="submit" class="btn">Add</button>
+        </form>
+    </div>
+
+    <div class="card">
+        <h3>Your Interviews</h3>
+        {% if interviews %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Company</th>
+                    <th>Days</th>
+                    <th>Progress</th>
+                    <th>Status</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for interview in interviews %}
+                {% set total = interview.roadmaps | length %}
+                {% set done = interview.roadmaps | selectattr("is_completed") | list | length %}
+                <tr>
+                    <td><strong>{{ interview.company.name }}</strong></td>
+                    <td>{{ interview.days_until }}</td>
+                    <td>
+                        {% if total > 0 %}
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" style="width: {{ (done / total * 100) | int }}%;"></div>
+                        </div>
+                        <span class="progress-text">{{ done }}/{{ total }}</span>
+                        {% else %}
+                        <span class="progress-text" style="color:#999;">—</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if interview.days_until <= 3 %}
+                        <span class="badge badge-urgent">Urgent</span>
+                        {% elif interview.days_until <= 7 %}
+                        <span class="badge badge-soon">Soon</span>
+                        {% else %}
+                        <span class="badge badge-ok">On Track</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if total > 0 %}
+                        <a href="/interview/{{ interview.id }}/roadmap" class="btn btn-sm">Roadmap &rarr;</a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="empty-state">No interviews scheduled yet. Add one above to get started.</div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
