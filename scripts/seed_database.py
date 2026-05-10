@@ -53,6 +53,20 @@ def seed_db(force=False):
     Base.metadata.create_all(bind=engine)
     db = next(get_db())
 
+    # Mini-migration: Ensure interview_date column exists
+    try:
+        from sqlalchemy import inspect, text
+        inspector = inspect(engine)
+        columns = [c['name'] for c in inspector.get_columns('interviews')]
+        if 'interview_date' not in columns:
+            print("Migration: Adding 'interview_date' column to 'interviews' table...")
+            with engine.connect() as conn:
+                conn.execute(text("ALTER TABLE interviews ADD COLUMN interview_date DATE"))
+                conn.commit()
+    except Exception as e:
+        print(f"Migration warning: {e}")
+
+
     try:
         existing_count = db.query(InterviewProblem).count()
         if existing_count > 0 and not force:

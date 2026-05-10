@@ -1,22 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}InterviewPrep{% endblock %}</title>
-    <link rel="stylesheet" href="/static/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css?v=1.0.1">
+    <meta name="description" content="Ace your next technical interview with a structured preparation plan.">
 </head>
+
 <body>
     <nav>
-        <a href="/" class="logo">InterviewPrep</a>
-        <div class="nav-links">
-            {% block nav %}
-            <a href="/login">Login</a>
-            <a href="/register">Register</a>
-            {% endblock %}
+        <div class="nav-container">
+            <a href="/" class="logo">InterviewPrep</a>
+
+            <div class="nav-actions">
+                {% block nav %}
+                <a href="/login" class="nav-link-login">Login</a>
+                <a href="/register" class="btn btn-sm btn-black">Get Started</a>
+                {% endblock %}
+            </div>
         </div>
     </nav>
     {% block content %}{% endblock %}
-    <footer>InterviewPrep &copy; 2026</footer>
+    <footer>
+        <div class="footer-container">
+            &copy; 2026 InterviewPrep · PRECISION IN PREPARATION
+        </div>
+    </footer>
 </body>
+
 </html>

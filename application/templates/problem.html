@@ -1,9 +1,8 @@
 {% extends "base.html" %}
 {% block title %}{{ problem.title }} - InterviewPrep{% endblock %}
 {% block nav %}
-<a href="/dashboard">Dashboard</a>
-<a href="/interview/{{ interview.id }}/roadmap">Roadmap</a>
-<a href="/logout">Logout</a>
+<a href="/dashboard" class="nav-link-login">DASHBOARD</a>
+<a href="/logout" class="nav-link-login">LOGOUT</a>
 {% endblock %}
 {% block content %}
 <div class="problem-layout">
@@ -32,12 +31,15 @@
             {% endif %}
         </div>
 
-        <div class="problem-actions">
-            <a href="{{ problem.url }}" target="_blank" rel="noopener" class="btn">Solve on LeetCode &nearr;</a>
+        <div class="problem-footer-fixed">
+            <a href="{{ problem.url }}" target="_blank" rel="noopener" class="btn btn-black btn-full">Solve on LeetCode &nearr;</a>
         </div>
     </div>
 
-    <div class="tutor-panel">
+    <div class="tutor-panel" id="tutor-panel">
+        <button class="tutor-toggle" onclick="toggleTutor()" title="Toggle Tutor">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg>
+        </button>
         <div class="tutor-header">
             <div class="tutor-avatar">T</div>
             <div>
@@ -127,6 +129,13 @@
         document.getElementById('tutor-input').focus();
         document.getElementById('tutor-messages').scrollTop = document.getElementById('tutor-messages').scrollHeight;
         return false;
+    }
+
+    function toggleTutor() {
+        const panel = document.getElementById('tutor-panel');
+        const layout = document.querySelector('.problem-layout');
+        panel.classList.toggle('collapsed');
+        layout.classList.toggle('tutor-collapsed');
     }
 </script>
 {% endblock %}

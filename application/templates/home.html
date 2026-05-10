@@ -2,9 +2,31 @@
 {% block title %}InterviewPrep - Home{% endblock %}
 {% block content %}
 <div class="hero">
-    <h1>Ace Your Next Interview</h1>
+    <h1>Ace Your Next <span class="text-accent">Interview</span></h1>
     <p>Pick a company, set your timeline, and let us guide you through a structured preparation plan tailored to your goals.</p>
-    <a href="/register" class="btn">Get Started</a>
-    <a href="/login" class="btn btn-outline">Login</a>
+    <div class="hero-btns">
+        <a href="/register" class="btn">Get Started</a>
+        <a href="/login" class="btn btn-outline">Login</a>
+    </div>
+</div>
+
+<div class="features-section">
+    <div class="features-container">
+        <div class="feature-card">
+            <div class="feature-icon icon-book"></div>
+            <h3>Tailored Curriculum</h3>
+            <p>Direct paths to FAANG readiness with structured learning modules.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon icon-calendar"></div>
+            <h3>Adaptive Scheduling</h3>
+            <p>Timeline-based preparation that adjusts to your interview date.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon icon-brain"></div>
+            <h3>AI Coaching</h3>
+            <p>Real-time feedback on your mock interview responses and posture.</p>
+        </div>
+    </div>
 </div>
 {% endblock %}

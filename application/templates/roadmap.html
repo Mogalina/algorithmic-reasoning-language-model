@@ -1,53 +1,93 @@
 {% extends "base.html" %}
 {% block title %}Roadmap — {{ interview.company.name }} - InterviewPrep{% endblock %}
 {% block nav %}
-<a href="/dashboard">Dashboard</a>
-<a href="/logout">Logout</a>
+<a href="/logout" class="nav-link-login">LOGOUT</a>
 {% endblock %}
 {% block content %}
-<div class="roadmap-container">
-    <a href="/dashboard" class="back-link">&larr; Back to Dashboard</a>
-
-    <div class="roadmap-header">
-        <div>
-            <h1>{{ interview.company.name }}</h1>
-            <p class="roadmap-subtitle">{{ interview.days_until }} days &middot; {{ roadmap_items | length }} problems</p>
+<div class="dashboard-container">
+    <header class="page-header">
+        <div class="portal-tag">EXECUTIVE PREPARATION PORTAL</div>
+        <h1>{{ interview.company.name }} Roadmap</h1>
+        <div class="roadmap-meta-row">
+            <p class="welcome-msg">{{ roadmap_items | length }} Curated Problems &middot; {{ interview.days_until }}
+                Days Remaining</p>
+            <a href="/dashboard" class="back-link-premium">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+                Back to Dashboard
+            </a>
         </div>
-        <div class="roadmap-stats">
+    </header>
+
+    <div class="roadmap-grid">
+        <!-- Progress Overview -->
+        <div class="roadmap-progress-card">
             {% set done = roadmap_items | selectattr("is_completed") | list | length %}
             {% set total = roadmap_items | length %}
-            <div class="stat-ring">
-                <svg viewBox="0 0 36 36">
-                    <path class="stat-ring-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
-                    <path class="stat-ring-fill" stroke-dasharray="{{ (done / total * 100) if total else 0 }}, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
-                </svg>
-                <span class="stat-ring-text">{{ done }}/{{ total }}</span>
-            </div>
-        </div>
-    </div>
-
-    <div class="problem-list">
-        {% for item in roadmap_items %}
-        <div class="problem-card {% if item.is_completed %}problem-card--done{% endif %}">
-            <div class="problem-card-left">
-                <form method="post" action="/interview/{{ interview.id }}/roadmap/{{ item.id }}/toggle" class="check-form">
-                    <button type="submit" class="check-btn {% if item.is_completed %}check-btn--checked{% endif %}" title="Toggle completed">
-                        {% if item.is_completed %}&#10003;{% endif %}
-                    </button>
-                </form>
-                <div class="problem-info">
-                    <a href="/interview/{{ interview.id }}/problem/{{ item.problem.id }}" class="problem-title">{{ item.problem.title }}</a>
-                    <div class="problem-meta">
-                        <span class="difficulty-tag difficulty-{{ item.problem.difficulty | lower }}">{{ item.problem.difficulty }}</span>
-                        {% if item.problem.topics %}
-                        <span class="topics-text">{{ item.problem.topics }}</span>
-                        {% endif %}
-                    </div>
+            <div class="progress-info">
+                <div class="progress-text-group">
+                    <span class="progress-label">OVERALL COMPLETION</span>
+                    <span class="progress-percentage">{{ ((done / total * 100) if total else 0) | int }}%</span>
+                </div>
+                <div class="track-progress-bar">
+                    <div class="progress-fill" style="width: {{ (done / total * 100) if total else 0 }}%;"></div>
+                </div>
+                <div class="progress-stats-footer">
+                    <span>{{ done }} OF {{ total }} MODULES COMPLETED</span>
                 </div>
             </div>
-            <a href="/interview/{{ interview.id }}/problem/{{ item.problem.id }}" class="problem-go" title="Open problem">&rarr;</a>
         </div>
-        {% endfor %}
+
+        <!-- Problems List -->
+        <div class="problems-container">
+            <div class="section-header">
+                <h2>Preparation Modules</h2>
+                <span class="count-badge">STRUCTURED CURRICULUM</span>
+            </div>
+
+            <div class="tracks-list">
+                {% for item in roadmap_items %}
+                <div class="track-card {% if item.is_completed %}card-completed{% endif %}">
+                    <div class="track-info">
+                        <div class="track-title-row">
+                            <form method="post" action="/interview/{{ interview.id }}/roadmap/{{ item.id }}/toggle"
+                                class="check-form">
+                                <button type="submit"
+                                    class="premium-check {% if item.is_completed %}check-active{% endif %}">
+                                    {% if item.is_completed %}
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                    {% endif %}
+                                </button>
+                            </form>
+                            <a href="/interview/{{ interview.id }}/problem/{{ item.problem.id }}"
+                                class="roadmap-problem-link">
+                                <h3>{{ item.problem.title }}</h3>
+                            </a>
+                            <span class="difficulty-badge difficulty-{{ item.problem.difficulty | lower }}">
+                                {{ item.problem.difficulty }}
+                            </span>
+                        </div>
+                        <div class="problem-topics-row">
+                            <span class="topics-text">{{ item.problem.topics if item.problem.topics else "Algorithm &
+                                Data Structures" }}</span>
+                        </div>
+                    </div>
+
+                    <div class="track-status">
+                        <a href="/interview/{{ interview.id }}/problem/{{ item.problem.id }}"
+                            class="btn btn-outline btn-roadmap">PRACTICE</a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}
