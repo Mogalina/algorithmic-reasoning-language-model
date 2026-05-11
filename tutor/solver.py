@@ -2,6 +2,7 @@ import os
 from typing import Optional
 from decouple import config
 from huggingface_hub import InferenceClient
+from tutor.solver_evaluator import solver_evaluator
 
 class GemmaSolver:
     """
@@ -49,12 +50,33 @@ class GemmaSolver:
         self.local_model.eval()
         print("[GemmaSolver] Local weights ready.")
 
-    def solve(self, problem_description: str) -> str:
-        """Entry point for getting the expert solution."""
-        if self.mode == "api":
-            return self._solve_via_hf_api(problem_description)
-        else:
-            return self._solve_locally(problem_description)
+    def solve(self, problem_description: str, max_retries: int = 2) -> str:
+        """Entry point for getting the expert solution with self-evaluation."""
+        best_solution = ""
+        best_score = -1.0
+        
+        for attempt in range(max_retries + 1):
+            if self.mode == "api":
+                solution = self._solve_via_hf_api(problem_description)
+            else:
+                solution = self._solve_locally(problem_description)
+            
+            # Evaluate the solution
+            score, reason = solver_evaluator.evaluate(problem_description, solution)
+            print(f"[GemmaSolver] Attempt {attempt+1} score: {score}. Reason: {reason}")
+            
+            if score >= 0.8: # Threshold for "Expert" quality
+                return solution
+            
+            if score > best_score:
+                best_score = score
+                best_solution = solution
+                
+            if attempt < max_retries:
+                print(f"[GemmaSolver] Score {score} too low. Retrying...")
+
+        print(f"[GemmaSolver] Warning: Could not reach target score. Returning best solution (score: {best_score})")
+        return best_solution
 
     def _solve_via_hf_api(self, problem_description: str) -> str:
         """Calls the Hugging Face Inference API using chat completion."""

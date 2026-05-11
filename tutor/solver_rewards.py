@@ -21,16 +21,30 @@ import re
 def extract_code(text: str) -> str:
     """
     Extract Python code from LLM output.
-
-    If the text contains a fenced code block (```python ... ``` or ``` ... ```),
-    the content of the first block is returned.  Otherwise the full text is
-    returned as-is.
     """
-    pattern = r"```(?:python|py)?\s*\n([\s\S]*?)```"
+    if not text:
+        return ""
+
+    original_text = text
+    pattern = r"```(?:python|py)?\s*([\s\S]*?)\s*```"
     match = re.search(pattern, text)
     if match:
-        return match.group(1)
-    return text
+        text = match.group(1).strip()
+    else:
+        parts = text.split("```")
+        if len(parts) >= 3:
+            text = parts[1]
+            text = re.sub(r"^(?:python|py)\s*", "", text, flags=re.IGNORECASE)
+            text = text.strip()
+        else:
+            text = text.replace("```python", "").replace("```py", "").replace("```", "").strip()
+
+    if text.startswith("```"):
+        text = re.sub(r"^```(?:python|py)?\s*", "", text, flags=re.IGNORECASE)
+    if text.endswith("```"):
+        text = text[:-3]
+        
+    return text.strip()
 
 
 # ---------------------------------------------------------------------------
@@ -45,6 +59,8 @@ def _compiles(code: str) -> tuple[bool, str | None]:
     failure.
     """
     try:
+        if not code:
+            return False, "Empty code."
         ast.parse(code)
         return True, None
     except SyntaxError as e:
@@ -56,24 +72,16 @@ def _compiles(code: str) -> tuple[bool, str | None]:
 def compute_solver_reward(code: str) -> dict:
     """
     Compute the RLHF reward for a solver-generated Python solution.
-
-    Args:
-        code: The generated code (raw string or LLM output with fences).
-
-    Returns::
-
-        {
-            "reward": +1 | -1,
-            "compiled": bool,
-            "error": str | None,
-        }
     """
     if not code or not code.strip():
         return {"reward": -1, "compiled": False, "error": "Empty code output."}
 
+    original_code = code
     code = extract_code(code)
 
     compiled, error = _compiles(code)
+    if not compiled:
+        print(f"[SolverReward] Compilation failed for code:\n{code[:100]}...")
 
     return {
         "reward": +1 if compiled else -1,
