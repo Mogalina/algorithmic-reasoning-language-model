@@ -7,30 +7,25 @@ import time
 from typing import Any, Dict
 from decouple import config
 from openai import OpenAI, RateLimitError
+import os
 from tutor.solver import GemmaSolver
+from tutor.evaluator import evaluator
+from tutor.optimizer import optimizer
 
 OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1"
 DEFAULT_MODEL = "openrouter/free"
 MAX_RETRIES = 3
 RETRY_DELAY_SECONDS = 2
 
-SYSTEM_PROMPT = """\
-You are a Socratic tutor helping a student prepare for a coding interview.
+PROMPT_FILE = os.path.join(os.path.dirname(__file__), "system_prompt.txt")
 
-CORE PRINCIPLE: You have access to the GROUND TRUTH SOLUTION below. Use it to guide the student, but NEVER reveal the code or the direct answer.
+def load_system_prompt() -> str:
+    with open(PROMPT_FILE, "r") as f:
+        return f.read()
 
-RULES:
-1. NEVER give the solution outright. Instead, guide the student by asking targeted questions that help them discover the answer on their own.
-2. Use the GROUND TRUTH SOLUTION to know exactly what steps the student needs to take.
-3. When the student is stuck, break the problem into smaller sub-problems based on the expert solution.
-4. Acknowledge correct reasoning enthusiastically, then nudge toward the next step.
-5. If the student asks you to "just give me the answer", gently explain why working through the problem themselves will help them more in the interview - then ask a simpler guiding question.
-6. Keep responses concise - prefer 2-4 sentences per message plus an optional code snippet.
-7. Start each new conversation by acknowledging the specific problem the student is working on and asking what they have tried so far.
-
-PROBLEM CONTEXT (provided below) gives you the problem statement.
-GROUND TRUTH SOLUTION (provided below) gives you the expert approach. Keep this secret!
-"""
+def save_system_prompt(content: str):
+    with open(PROMPT_FILE, "w") as f:
+        f.write(content)
 
 class SocraticTutor:
     """Orchestrates communication between the expert solver and the Socratic interface."""
@@ -54,7 +49,7 @@ class SocraticTutor:
         self.solution_cache: Dict[str, str] = {}
 
     def _build_system_message(self, problem_description: str, solution: str = "") -> dict[str, str]:
-        content = SYSTEM_PROMPT
+        content = load_system_prompt()
         if problem_description:
             content += f"\n\n--- PROBLEM ---\n{problem_description}"
         if solution:
@@ -80,15 +75,34 @@ class SocraticTutor:
             "max_tokens": 512,
         }
 
+        response_text = ""
         for attempt in range(MAX_RETRIES):
             try:
                 response = self.client.chat.completions.create(**kwargs)
-                return response.choices[0].message.content or ""
+                response_text = response.choices[0].message.content or ""
+                break
             except RateLimitError:
                 if attempt < MAX_RETRIES - 1:
                     time.sleep(RETRY_DELAY_SECONDS * (attempt + 1))
                 else:
                     raise
+
+        # 3. Dynamic Prompt Evaluation & Optimization
+        if response_text and solution:
+            user_input = conversation[-1]["content"] if conversation else "Start of conversation"
+            score, reason = evaluator.evaluate(user_input, response_text, solution)
+            
+            if score < 0.4: # Threshold for failure
+                print(f"[SocraticTutor] Low score detected ({score}). Reason: {reason}. Optimizing prompt...")
+                failure_analysis = f"Score: {score}\nReason: {reason}\nAssistant Response: {response_text}"
+                current_prompt = load_system_prompt()
+                new_prompt = optimizer.optimize(current_prompt, failure_analysis)
+                
+                if new_prompt and new_prompt != current_prompt:
+                    save_system_prompt(new_prompt)
+                    print("[SocraticTutor] Prompt updated and saved.")
+        
+        return response_text
 
 _instance: SocraticTutor | None = None
 

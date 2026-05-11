@@ -123,7 +123,7 @@ def train_dpo():
 
     dpo_trainer.train()
     
-    print(f"[DPO] Saving improved adapter to ./gemma_dsa_dpo_final")
+    print("[DPO] Saving improved adapter to ./gemma_dsa_dpo_final")
     model.save_pretrained("./gemma_dsa_dpo_final")
     print("[DPO] Done!")
 
