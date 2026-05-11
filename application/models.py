@@ -1,4 +1,4 @@
-from sqlalchemy import Boolean, Column, Float, Integer, String, ForeignKey
+from sqlalchemy import Boolean, Column, Float, Integer, String, ForeignKey, Date
 from sqlalchemy.orm import relationship
 from database import Base
 
@@ -28,6 +28,7 @@ class Interview(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     days_until = Column(Integer, nullable=False)
+    interview_date = Column(Date, nullable=True)
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     company_id = Column(Integer, ForeignKey("companies.id"), nullable=False)
 

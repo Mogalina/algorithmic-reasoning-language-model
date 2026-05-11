@@ -1,86 +1,138 @@
 {% extends "base.html" %}
 {% block title %}Dashboard - InterviewPrep{% endblock %}
+{% block nav_menu %}
+<a href="/dashboard" class="active">Dashboard</a>
+{% endblock %}
 {% block nav %}
-<a href="/dashboard">Dashboard</a>
-<a href="/logout">Logout</a>
+<a href="/logout" class="nav-link-login">LOGOUT</a>
 {% endblock %}
 {% block content %}
 <div class="dashboard-container">
-    <div class="dashboard-header">
+    <header class="page-header">
+        <div class="portal-tag">EXECUTIVE PREPARATION PORTAL</div>
         <h1>Dashboard</h1>
-        <span style="color:#666;">{{ user.email }}</span>
-    </div>
+        <p class="welcome-msg">Welcome back, <strong>{{ user.email }}</strong></p>
+    </header>
 
-    <div class="card">
-        <h3>Schedule an Interview</h3>
-        <form method="post" action="/dashboard/add" class="inline-form">
-            <div class="form-group">
-                <label for="company_id">Company</label>
-                <select name="company_id" id="company_id" class="company_id" required>
-                    {% for company in companies %}
-                    <option value="{{ company.id }}">{{ company.name }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="days_until">Days Until Interview</label>
-                <input type="number" id="days_until" name="days_until" min="1" max="365" required placeholder="e.g. 14">
-            </div>
-            <button type="submit" class="btn">Add</button>
-        </form>
-    </div>
+    <div class="dashboard-grid">
+        <!-- Sidebar: New Track -->
+        <aside class="dashboard-sidebar">
+            <div class="sidebar-card">
+                <div class="sidebar-card-header">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 3h7v7H3z" />
+                        <path d="M14 3h7v7h-7z" />
+                        <path d="M14 14h7v7h-7z" />
+                        <path d="M3 14h7v7H3z" />
+                    </svg>
+                    <h3>New Track</h3>
+                </div>
 
-    <div class="card">
-        <h3>Your Interviews</h3>
-        {% if interviews %}
-        <table>
-            <thead>
-                <tr>
-                    <th>Company</th>
-                    <th>Days</th>
-                    <th>Progress</th>
-                    <th>Status</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
+                <form method="post" action="/dashboard/add" class="sidebar-form">
+                    {% if error %}
+                    <div class="error-msg" style="text-align: left; margin-bottom: 1rem;">{{ error }}</div>
+                    {% endif %}
+                    <div class="form-group underline-input">
+                        <label for="company_id">SELECT COMPANY</label>
+                        <div class="input-with-icon">
+                            <select name="company_id" id="company_id" required>
+                                <option value="" disabled selected>e.g. Google, Meta, Amazon</option>
+                                {% for company in companies %}
+                                <option value="{{ company.id }}">{{ company.name }}</option>
+                                {% endfor %}
+                            </select>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <div class="form-group slider-group">
+                        <div class="slider-header">
+                            <label for="days_until">DAYS UNTIL INTERVIEW</label>
+                            <span class="slider-value" id="days_val">14</span>
+                        </div>
+                        <input type="range" id="days_until" name="days_until" min="1" max="90" value="14"
+                            oninput="document.getElementById('days_val').innerText = this.value">
+                    </div>
+
+                    <button type="submit" class="btn btn-black btn-full">+ START TRACK</button>
+                </form>
+
+                <div class="sidebar-divider"></div>
+
+                <div class="prep-tip">
+                    <label>PREPARATION TIP</label>
+                    <p>"Focus on the 'Why us?' question for your upcoming interview. Precision in cultural alignment is
+                        as critical as technical prowess."</p>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content: Active Tracks -->
+        <main class="dashboard-main">
+            <div class="section-header">
+                <h2>Active Tracks</h2>
+                <span class="count-badge">{{ interviews | length }} IN PROGRESS</span>
+            </div>
+
+            <div class="tracks-list">
+                {% if interviews %}
                 {% for interview in interviews %}
                 {% set total = interview.roadmaps | length %}
                 {% set done = interview.roadmaps | selectattr("is_completed") | list | length %}
-                <tr>
-                    <td><strong>{{ interview.company.name }}</strong></td>
-                    <td>{{ interview.days_until }}</td>
-                    <td>
-                        {% if total > 0 %}
-                        <div class="progress-bar-container">
-                            <div class="progress-bar" style="width: {{ (done / total * 100) | int }}%;"></div>
+                <div class="track-card">
+                    <div class="track-info">
+                        <div class="track-title-row">
+                            <h3>{{ interview.company.name }}</h3>
+                            {% if interview.is_finished %}
+                            <span class="badge badge-ontrack">FINISHED</span>
+                            {% elif interview.days_remaining <= 3 %}
+                            <span class="badge badge-urgent">URGENT</span>
+                            {% elif interview.days_remaining <= 7 %}
+                            <span class="badge badge-soon">SOON</span>
+                            {% else %}
+                            <span class="badge badge-ontrack">ON TRACK</span>
+                            {% endif %}
                         </div>
-                        <span class="progress-text">{{ done }}/{{ total }}</span>
-                        {% else %}
-                        <span class="progress-text" style="color:#999;">—</span>
-                        {% endif %}
-                    </td>
-                    <td>
-                        {% if interview.days_until <= 3 %}
-                        <span class="badge badge-urgent">Urgent</span>
-                        {% elif interview.days_until <= 7 %}
-                        <span class="badge badge-soon">Soon</span>
-                        {% else %}
-                        <span class="badge badge-ok">On Track</span>
-                        {% endif %}
-                    </td>
-                    <td>
-                        {% if total > 0 %}
-                        <a href="/interview/{{ interview.id }}/roadmap" class="btn btn-sm">Roadmap &rarr;</a>
-                        {% endif %}
-                    </td>
-                </tr>
+
+                        <div class="track-progress-container">
+                            <div class="track-progress-bar">
+                                <div class="progress-fill"
+                                    style="width: {{ (done / total * 100) if total > 0 else 0 }}%;"></div>
+                            </div>
+                            <div class="progress-meta">
+                                <span>{{ done }}/{{ total if total > 0 else 10 }} MODULES</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="track-status">
+                        <div class="days-remaining">
+                            <strong>{{ interview.days_remaining }} Days Remaining</strong>
+                        </div>
+                        <div class="track-actions-row">
+                            <a href="/interview/{{ interview.id }}/roadmap" class="btn btn-roadmap">ROADMAP</a>
+                            {% if interview.is_finished %}
+                            <form method="post" action="/dashboard/delete/{{ interview.id }}" style="margin: 0;">
+                                <button type="submit" class="btn btn-delete" title="Remove completed track">DELETE</button>
+                            </form>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
                 {% endfor %}
-            </tbody>
-        </table>
-        {% else %}
-        <div class="empty-state">No interviews scheduled yet. Add one above to get started.</div>
-        {% endif %}
+                {% else %}
+                <div class="empty-state">
+                    <p>No active tracks yet. Start a new one to begin your journey.</p>
+                </div>
+                {% endif %}
+            </div>
+        </main>
     </div>
 </div>
 {% endblock %}

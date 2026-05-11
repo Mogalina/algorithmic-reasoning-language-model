@@ -49,15 +49,36 @@ def _load_rows():
     return None
 
 
-def seed_db():
+def seed_db(force=False):
     Base.metadata.create_all(bind=engine)
     db = next(get_db())
 
+    # Mini-migration: Ensure interview_date column exists
+    try:
+        from sqlalchemy import inspect, text
+        inspector = inspect(engine)
+        columns = [c['name'] for c in inspector.get_columns('interviews')]
+        if 'interview_date' not in columns:
+            print("Migration: Adding 'interview_date' column to 'interviews' table...")
+            with engine.connect() as conn:
+                conn.execute(text("ALTER TABLE interviews ADD COLUMN interview_date DATE"))
+                conn.commit()
+    except Exception as e:
+        print(f"Migration warning: {e}")
+
+
     try:
         existing_count = db.query(InterviewProblem).count()
-        if existing_count > 0:
+        if existing_count > 0 and not force:
             print(f"Database already seeded ({existing_count} problems). Skipping.")
+            print("Use --force to re-seed and update with new dataset content.")
             return
+
+        if force:
+            print("Force flag detected. Clearing existing problems and companies...")
+            db.query(InterviewProblem).delete()
+            db.query(Company).delete()
+            db.commit()
 
         rows = _load_rows()
         if rows is None:
@@ -103,4 +124,5 @@ def seed_db():
 
 
 if __name__ == "__main__":
-    seed_db()
+    force_seed = "--force" in sys.argv
+    seed_db(force=force_seed)
