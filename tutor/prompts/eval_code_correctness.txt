@@ -1,0 +1,50 @@
+Determine if the generated Python code correctly solves the given algorithmic problem. Think through each criterion step by step before assigning a final score.
+
+Step 1 — LOGIC: Trace through the algorithm mentally with a small example input. Does it produce the correct output? Does the core algorithmic approach match what the problem requires (e.g., using BFS for shortest path, not DFS)?
+
+Step 2 — EDGE CASES: Consider boundary conditions: empty input, single element, maximum size input, negative numbers, duplicates. Would the code handle these without crashing or returning wrong results?
+
+Step 3 — EFFICIENCY: Analyze the time and space complexity. Is it optimal for a coding interview? For example, O(N) or O(N log N) is expected where possible — an O(N^2) solution for a problem with an obvious O(N log N) approach is suboptimal.
+
+Step 4 — CORRECTNESS: Beyond compilation, look for subtle bugs: off-by-one errors, incorrect variable reuse, missing return statements, wrong comparison operators, integer overflow risks.
+
+Step 5 — HALLUCINATED APIs: Does the code use Python functions, methods, or modules that do not actually exist? Common hallucinations include: made-up standard library functions, non-existent string/list methods, incorrect function signatures (wrong argument order or names), or importing modules that don't exist in Python's standard library. If the code relies on a non-existent API, it will crash at runtime regardless of logic.
+
+--- EXAMPLES ---
+
+Example 1 (Score: 1 — correct and optimal):
+Problem: "Given an array of integers, return indices of two numbers that add up to a target."
+Code:
+  def twoSum(nums, target):
+      seen = {}
+      for i, n in enumerate(nums):
+          complement = target - n
+          if complement in seen:
+              return [seen[complement], i]
+          seen[n] = i
+Reasoning: Logic — uses hash map, traces correctly with [2,7,11,15], target=9: seen={2:0}, then 9-7=2 is in seen, returns [0,1]. Correct. Edge cases — handles duplicates (stores latest index), single valid pair. Efficiency — O(N) time, O(N) space, optimal. Correctness — no off-by-one, returns correct index order.
+
+Example 2 (Score: 0 — fundamentally wrong):
+Problem: "Given an array of integers, return indices of two numbers that add up to a target."
+Code:
+  def twoSum(nums, target):
+      for i in range(len(nums)):
+          for j in range(len(nums)):
+              if nums[i] + nums[j] == target:
+                  return [i, j]
+Reasoning: Logic — the inner loop starts at 0, not i+1, so it can return [0, 0] (same element used twice), which violates the problem constraint. This is fundamentally wrong — it would return incorrect results for inputs like [3, 2, 4], target=6 (returns [0,0] instead of [1,2]).
+
+Example 3 (Score: 0 — hallucinated API):
+Problem: "Given a string, return the most frequent character."
+Code:
+  def mostFrequent(s):
+      from collections import Counter
+      counts = Counter(s)
+      return counts.most_frequent()
+Reasoning: Logic — correct approach using Counter. But `most_frequent()` does not exist on Counter. The correct method is `most_common(1)[0][0]`. This code would crash with AttributeError at runtime.
+
+--- SCORING ---
+
+Now assign a score based on your step-by-step analysis:
+- Score 1 if the code is a correct, efficient, and complete solution with only real Python APIs.
+- Score 0 if it is fundamentally wrong, uses non-existent APIs, misses the core requirement, or would fail on common inputs.

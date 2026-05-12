@@ -1,6 +1,6 @@
-import requests
 from decouple import config
 from openai import OpenAI
+from tutor.prompts import render_prompt
 
 class TutorOptimizer:
     def __init__(self):
@@ -17,21 +17,11 @@ class TutorOptimizer:
         Takes the current prompt and a description of why it failed, 
         and returns an improved system prompt.
         """
-        meta_prompt = f"""
-        You are an expert Prompt Engineer.
-        The following system prompt is used for a Socratic Tutor:
-        
-        --- CURRENT PROMPT ---
-        {current_prompt}
-        
-        --- FAILURE ANALYSIS ---
-        The tutor failed to follow the rules. Specifically:
-        {failure_log}
-        
-        Your task is to REWRITE the system prompt to be more robust and address the specific failure identified above. 
-        Whether the issue is revealing the solution, being unhelpful, or lacking pedagogical balance, adjust the "RULES" and "CORE PRINCIPLES" to ensure the tutor performs better next time.
-        Return ONLY the new system prompt text.
-        """
+        meta_prompt = render_prompt(
+            "optimizer_meta",
+            current_prompt=current_prompt,
+            failure_log=failure_log,
+        )
         
         try:
             response = self.client.chat.completions.create(

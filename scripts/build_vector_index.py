@@ -23,45 +23,95 @@ EMBEDDINGS_SRC = PROJECT_ROOT / "embeddings" / "src"
 sys.path.insert(0, str(APP_DIR))
 sys.path.insert(0, str(EMBEDDINGS_SRC))
 
-# TODO: Implement once ChromaDB is added as a dependency
-#
-# Intended flow:
-#   1. Load all InterviewProblem rows from the database
-#   2. Build text representations: "{title} | {topics} | {difficulty}"
-#   3. Embed them in batches using embeddings.src.pipeline.Embedder
-#   4. Store vectors + metadata (problem ID, company, difficulty) in ChromaDB
-#   5. Persist the ChromaDB collection to disk at data/chromadb/
-#
-# Example:
-#   from database import SessionLocal
-#   from models import InterviewProblem
-#   from pipeline import Embedder
-#   import chromadb
-#
-#   db = SessionLocal()
-#   problems = db.query(InterviewProblem).all()
-#   embedder = Embedder()
-#
-#   client = chromadb.PersistentClient(path=str(PROJECT_ROOT / "data" / "chromadb"))
-#   collection = client.get_or_create_collection("problems")
-#
-#   batch_size = 64
-#   for i in range(0, len(problems), batch_size):
-#       batch = problems[i : i + batch_size]
-#       texts = [f"{p.title} | {p.topics or ''} | {p.difficulty}" for p in batch]
-#       vectors = embedder.embed(texts)
-#       collection.add(
-#           ids=[str(p.id) for p in batch],
-#           embeddings=vectors.tolist(),
-#           metadatas=[{
-#               "company_id": p.company_id,
-#               "difficulty": p.difficulty,
-#               "title": p.title,
-#           } for p in batch],
-#       )
-#
-#   print(f"Indexed {len(problems)} problems into ChromaDB.")
+import os
+from decouple import Config, RepositoryEnv
+
+# Load environment variables from .env
+env_path = PROJECT_ROOT / ".env"
+if env_path.exists():
+    env = Config(RepositoryEnv(str(env_path)))
+    hf_token = env.get("HF_TOKEN", default=None)
+    if hf_token:
+        os.environ["HF_TOKEN"] = hf_token
+        print("HF_TOKEN loaded from .env")
+
+from database import SessionLocal
+from models import InterviewProblem
+from pipeline import Embedder
+import chromadb
+import numpy as np
+
+def build_index():
+    # 1. Load all InterviewProblem rows from the database
+    db = SessionLocal()
+    problems = db.query(InterviewProblem).all()
+    
+    if not problems:
+        print("No problems found in the database. Please run seed_database.py first.")
+        db.close()
+        return
+
+    # 2. Initialize Embedder
+    # By default it looks for config/config.yaml relative to embeddings/src/
+    # which we've added to sys.path.
+    print("Initializing Embedder...")
+    embedder = Embedder()
+
+    # 3. Initialize ChromaDB client
+    chroma_path = str(PROJECT_ROOT / "data" / "chromadb")
+    print(f"Connecting to ChromaDB at {chroma_path}...")
+    client = chromadb.PersistentClient(path=chroma_path)
+    
+    # Create or get collection
+    collection_name = "problems"
+    collection = client.get_or_create_collection(name=collection_name)
+
+    # 4. Embed and store in batches
+    batch_size = 64
+    total = len(problems)
+    print(f"Starting to index {total} problems into ChromaDB...")
+
+    # Clear existing entries in the collection if needed? 
+    # For now we'll just add/update. 
+    # If we want a clean slate:
+    # client.delete_collection(collection_name)
+    # collection = client.create_collection(collection_name)
+
+    for i in range(0, total, batch_size):
+        batch = problems[i : i + batch_size]
+        
+        # Build text representations: "{company} | {title} | {topics} | {difficulty}"
+        # Fetching company names for the batch
+        texts = []
+        for p in batch:
+            company_name = p.company.name if p.company else "Unknown"
+            texts.append(f"{company_name} | {p.title} | {p.topics or ''} | {p.difficulty}")
+        
+        # Embed them
+        vectors = embedder.embed(texts)
+        
+        # Store vectors + metadata
+        # ChromaDB expects embeddings as a list of lists
+        collection.add(
+            ids=[str(p.id) for p in batch],
+            embeddings=vectors.tolist(),
+            metadatas=[{
+                "company_id": p.company_id,
+                "difficulty": p.difficulty,
+                "frequency": p.frequency or 0.0,
+                "title": p.title,
+                "url": p.url
+            } for p in batch],
+            documents=[p.description[:1000] if p.description else "" for p in batch] # Store a snippet/full description
+        )
+        print(f"Indexed {min(i + batch_size, total)}/{total} problems...")
+
+    print(f"Successfully indexed {total} problems into ChromaDB collection '{collection_name}'.")
+    db.close()
 
 if __name__ == "__main__":
-    print("build_vector_index.py is not yet implemented.")
-    print("See the TODO comments in this file for the intended flow.")
+    try:
+        build_index()
+    except Exception as e:
+        print(f"Error building vector index: {e}")
+        sys.exit(1)

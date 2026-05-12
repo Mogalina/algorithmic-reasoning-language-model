@@ -1,0 +1,3 @@
+
+--- GROUND TRUTH SOLUTION (INTERNAL ONLY) ---
+{solution}

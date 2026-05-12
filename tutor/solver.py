@@ -1,8 +1,8 @@
-import os
-from typing import Optional
 from decouple import config
 from huggingface_hub import InferenceClient
 from tutor.solver_evaluator import solver_evaluator
+from tutor.prompts import load_prompt, render_prompt
+from rag.retriever import get_retriever
 
 class GemmaSolver:
     """
@@ -18,6 +18,7 @@ class GemmaSolver:
         self.client = None
         self.local_model = None
         self.tokenizer = None
+        self._retriever = None  # Lazy-loaded on first solve
         
         if self.mode == "api":
             if not self.hf_token:
@@ -50,16 +51,54 @@ class GemmaSolver:
         self.local_model.eval()
         print("[GemmaSolver] Local weights ready.")
 
+    def _get_retriever(self):
+        """Lazy-load the RAG retriever to avoid startup cost."""
+        if self._retriever is None:
+            try:
+                self._retriever = get_retriever()
+            except Exception as e:
+                print(f"[GemmaSolver] Warning: Could not load RAG retriever: {e}")
+        return self._retriever
+
+    def _build_few_shot_context(self, problem_description: str) -> str:
+        """
+        Retrieve similar solved problems from the ChromaDB solutions index
+        and format them as few-shot examples to enrich the solver prompt.
+        """
+        retriever = self._get_retriever()
+        if retriever is None:
+            return ""
+
+        try:
+            results = retriever.retrieve_solutions(problem_description, n_results=2)
+            documents = results.get("documents", [[]])[0]
+            if not documents:
+                return ""
+
+            examples = []
+            for idx, solution_code in enumerate(documents, start=1):
+                examples.append(f"--- Reference Solution {idx} ---\n{solution_code.strip()}")
+
+            return load_prompt("few_shot_preamble") + "\n\n".join(examples)
+        except Exception as e:
+            print(f"[GemmaSolver] RAG retrieval failed (non-fatal): {e}")
+            return ""
+
     def solve(self, problem_description: str, max_retries: int = 2) -> str:
         """Entry point for getting the expert solution with self-evaluation."""
         best_solution = ""
         best_score = -1.0
+
+        # Build few-shot context once for all retry attempts
+        few_shot_context = self._build_few_shot_context(problem_description)
+        if few_shot_context:
+            print("[GemmaSolver] RAG: injecting similar solutions into prompt.")
         
         for attempt in range(max_retries + 1):
             if self.mode == "api":
-                solution = self._solve_via_hf_api(problem_description)
+                solution = self._solve_via_hf_api(problem_description, few_shot_context)
             else:
-                solution = self._solve_locally(problem_description)
+                solution = self._solve_locally(problem_description, few_shot_context)
             
             # Evaluate the solution
             score, reason = solver_evaluator.evaluate(problem_description, solution)
@@ -78,10 +117,10 @@ class GemmaSolver:
         print(f"[GemmaSolver] Warning: Could not reach target score. Returning best solution (score: {best_score})")
         return best_solution
 
-    def _solve_via_hf_api(self, problem_description: str) -> str:
+    def _solve_via_hf_api(self, problem_description: str, few_shot_context: str = "") -> str:
         """Calls the Hugging Face Inference API using chat completion."""
-        system_prompt = "You are an expert competitive programmer. Solve the problem in Python 3. Return ONLY the code inside triple backticks. Do not include any other conversational text."
-        user_prompt = f"Problem:\n{problem_description}\n\nSolution:"
+        system_prompt = load_prompt("solver_system").strip()
+        user_prompt = render_prompt("solver_user", problem_description=problem_description, few_shot_context=few_shot_context)
         
         try:
             response = self.client.chat_completion(
@@ -99,11 +138,11 @@ class GemmaSolver:
             print(f"[GemmaSolver] HF API Error: {e}")
             return "Expert solution unavailable via HF API."
 
-    def _solve_locally(self, problem_description: str) -> str:
+    def _solve_locally(self, problem_description: str, few_shot_context: str = "") -> str:
         try:
             self._load_local_model()
             import torch
-            prompt = f"You are an expert competitive programmer. Solve the following problem in Python 3:\n\n{problem_description}\n\nSolution:\n"
+            prompt = render_prompt("solver_local", problem_description=problem_description, few_shot_context=few_shot_context)
             inputs = self.tokenizer(prompt, return_tensors="pt").to(self.local_model.device)
             
             with torch.no_grad():

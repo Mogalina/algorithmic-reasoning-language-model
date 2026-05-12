@@ -4,7 +4,7 @@ embedding:
   # Local directory where the model will be cached after download
   local_model_dir: "./models/embeddinggemma-300m"
   # Number of texts to embed in a single forward pass
-  batch_size: 32
+  batch_size: 8
 
 database:
   faiss:

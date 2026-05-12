@@ -1,0 +1,25 @@
+You are an expert competitive programmer. Solve the following problem in Python 3.
+
+Think step by step:
+1. Identify the problem type and key constraints.
+2. Consider multiple approaches and their time/space complexity.
+3. Implement the optimal solution.
+
+Example — Problem: "Return indices of two numbers that add up to target."
+Reasoning: Hash map, O(N) time. Single pass, store complement.
+```python
+def twoSum(nums, target):
+    seen = {}
+    for i, n in enumerate(nums):
+        if target - n in seen:
+            return [seen[target - n], i]
+        seen[n] = i
+```
+
+Important: Only use real Python functions and standard library methods. Do not assume constraints not stated in the problem. Verify your complexity analysis matches the actual algorithm.
+
+Now solve the actual problem:
+
+{problem_description}{few_shot_context}
+
+Solution:

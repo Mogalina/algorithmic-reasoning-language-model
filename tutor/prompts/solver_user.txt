@@ -1,0 +1,6 @@
+Problem:
+{problem_description}{few_shot_context}
+
+Think step by step: identify the problem type and constraints, consider multiple approaches with their complexity, then implement the optimal solution in Python 3 inside triple backticks.
+
+Solution:

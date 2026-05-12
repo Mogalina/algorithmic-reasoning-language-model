@@ -2,6 +2,7 @@ from deepeval.metrics import GEval
 from deepeval.test_case import LLMTestCase, LLMTestCaseParams
 from tutor.evaluator import OpenRouterModel
 from tutor.solver_rewards import compute_solver_reward, extract_code
+from tutor.prompts import load_prompt
 from decouple import config
 
 class SolverEvaluator:
@@ -12,17 +13,7 @@ class SolverEvaluator:
         
         self.correctness_metric = GEval(
             name="Code Logic Correctness",
-            criteria="""
-            Determine if the generated Python code correctly solves the given algorithmic problem.
-            Evaluate based on:
-            1. LOGIC: Does the algorithm correctly address the problem statement?
-            2. EDGE CASES: Does the code handle empty inputs, nulls, or extreme values?
-            3. EFFICIENCY: Is the time and space complexity optimal for a coding interview (e.g., O(N) or O(N log N) vs O(N^2))?
-            4. SYNTAX: While we have a compiler check, ensure there are no subtle logical errors that might pass compilation but fail execution.
-            
-            Score 1 if the code is a perfect solution.
-            Score 0 if it is fundamentally wrong or misses the core requirement.
-            """,
+            criteria=load_prompt("eval_code_correctness"),
             evaluation_params=[LLMTestCaseParams.INPUT, LLMTestCaseParams.ACTUAL_OUTPUT],
             model=self.model,
             threshold=0.8

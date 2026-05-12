@@ -2,6 +2,7 @@ from deepeval.metrics import GEval
 from deepeval.test_case import LLMTestCase, LLMTestCaseParams
 from deepeval.models.base_model import DeepEvalBaseLLM
 from decouple import config
+from tutor.prompts import load_prompt
 
 class OpenRouterModel(DeepEvalBaseLLM):
     def __init__(self, model_name):
@@ -36,17 +37,7 @@ class TutorEvaluator:
         
         self.socratic_quality_metric = GEval(
             name="Socratic Quality",
-            criteria="""
-            Evaluate the assistant's response based on these four pillars:
-            1. NON-DISCLOSURE: Does it avoid giving the solution or code? (Critical failure if it gives code).
-            2. RELEVANCE: Is the response directly related to the current problem and the user's last input?
-            3. HELPFULNESS: Does it provide a meaningful nudge or question that helps the student progress? Avoid "I don't know" or irrelevant comments.
-            4. PEDAGOGICAL BALANCE: Does it acknowledge correct steps? It shouldn't just ask questions; it should confirm if the student is on the right track.
-            
-            Score 0 if it reveals code.
-            Score 1 if it is a perfect Socratic nudge.
-            Score 0.5 if it is irrelevant or unhelpful.
-            """,
+            criteria=load_prompt("eval_socratic_quality"),
             evaluation_params=[LLMTestCaseParams.INPUT, LLMTestCaseParams.ACTUAL_OUTPUT, LLMTestCaseParams.RETRIEVAL_CONTEXT],
             model=model,
             threshold=0.7
