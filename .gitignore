@@ -93,7 +93,6 @@ htmlcov/
 
 # Large datasets (Kaggle)
 datasets/companies_sorted.csv
-datasets/companies.parquet
 
 # Temporary files
 tmp/
