@@ -27,6 +27,7 @@ venv/
 env/
 ENV/
 virtualenv/
+report/
 
 # IDEs
 .vscode/
