@@ -71,12 +71,6 @@ def build_index():
     total = len(problems)
     print(f"Starting to index {total} problems into ChromaDB...")
 
-    # Clear existing entries in the collection if needed? 
-    # For now we'll just add/update. 
-    # If we want a clean slate:
-    # client.delete_collection(collection_name)
-    # collection = client.create_collection(collection_name)
-
     for i in range(0, total, batch_size):
         batch = problems[i : i + batch_size]
         
