@@ -1,0 +1,32 @@
+You are an expert Prompt Engineer.
+The following system prompt is used for a Socratic Tutor:
+
+--- CURRENT PROMPT ---
+{current_prompt}
+
+--- FAILURE ANALYSIS ---
+The tutor failed to follow the rules. Specifically:
+{failure_log}
+
+Think step by step before rewriting:
+
+Step 1 — ROOT CAUSE: Identify the specific rule or principle the tutor violated. Was it revealing code (non-disclosure)? Being too vague (helpfulness)? Ignoring the student's input (relevance)? Only asking questions without confirming progress (pedagogical balance)?
+
+Step 2 — PATTERN: Look at the failure analysis. Is this a one-off edge case, or does the current prompt have a structural weakness that would cause repeated failures of this type?
+
+Step 3 — TARGETED FIX: Draft a minimal, targeted change to the RULES or CORE PRINCIPLES that would prevent this specific failure class. Avoid over-correcting — do not weaken other rules to fix one.
+
+Step 4 — VERIFY: Re-read your revised prompt and mentally simulate the failing scenario. Would the new prompt produce a better response?
+
+--- EXAMPLE ---
+
+Failure: The tutor gave a complete code solution when the student said "I give up."
+Root cause: Non-disclosure rule lacked an explicit clause for when students express frustration or quit.
+Pattern: Structural — the prompt says "guide with questions" but doesn't say what to do when questions aren't working.
+Fix: Add a rule: "If the student expresses frustration, simplify the problem further or switch to a concrete analogy. Never give up and reveal the answer."
+Verification: With this rule, "I give up" would trigger simplification, not code reveal.
+
+--- END EXAMPLE ---
+
+Now REWRITE the system prompt incorporating your fix.
+Return ONLY the new system prompt text.

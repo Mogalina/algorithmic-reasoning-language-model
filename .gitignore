@@ -84,12 +84,15 @@ htmlcov/
 
 # Jupyter
 .ipynb_checkpoints/
-*.ipynb
+# *.ipynb
 
 # MacOS
 .DS_Store
 .AppleDouble
 .LSOverride
+
+# Large datasets (Kaggle)
+datasets/companies_sorted.csv
 
 # Temporary files
 tmp/
